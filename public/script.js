@@ -68,7 +68,16 @@ document.body.appendChild(mainHeader);
 const main = el('main', { class: 'container' });
 const factsSection = el('section', { class: 'section facts', attrs: { id: 'facts' } });
 factsSection.innerHTML = `<h2>Facts about me</h2>
-  <div class="placeholder">(Place your facts here — edit the DOM or populate dynamically)</div>`;
+<div class="about">
+  <p><strong>Godbuild Imoh Michael, simply known as Godbuild, was born on Monday, January 3, 2011 (C.E.), at the University of Uyo Teaching Hospital (UUTH), Uyo, Akwa Ibom State, Nigeria. He was born into the family of Mr. and Mrs. Imoh Michael, natives of Otoro Abak and Oruk Anam, respectively, both in Abak Local Government Area, Akwa Ibom State. He has resided in Eket since birth.
+Godbuild is the firstborn child of the family. He is followed by a sister born in 2012, a brother born in 2015, and another sister born in 2020.
+He is a worshipper at The Redeemed Christian Church of God (RCCG). He began his early education at Christ Redeemers Academy, Eket (2014–2017), where he advanced directly from Nursery 2, having skipped Nursery 1 due to his academic ability. He later continued his primary education at Christian Discipleship Academy, Eket (2017–2020). The COVID-19 pandemic disrupted his schooling in 2020, preventing the full completion of Primary 5.
+Godbuild proceeded to Faith Academy, Eket, where he has been attending secondary school from 2020 to date. He obtained his First School Leaving Certificate in 2021 and is currently in SS3, the final class of secondary school.
+Godbuild is a dynamic and purpose-driven individual, a believer in Christ, a published writer with an article titled “Born to Be Great”, a songwriter, and a creative thinker with strong problem-solving skills. He has a deep interest in technology, particularly computer studies, and aspires to become a software developer. He is currently an amateur web designer and an active learner in the field of technology. His favorite sport is football.
+— Written on Wednesday, February 4, 2026.</p>
+  <!-- continue paragraphs -->
+</div>
+
 main.appendChild(factsSection);
 
 const contactSection = el('section', { class: 'section', attrs: { id: 'contact' } });
