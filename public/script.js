@@ -84,7 +84,6 @@ contactSection.innerHTML = `<h2>Contact</h2>
     </div>
     <div class="contact-card">
       <h3><u>Socials</u></h3>
-      <p class="placeholder">Add your social platforms below (edit links to point to your profiles)</p>
       <ul id="social-links">
         <li><a href="https://www.instagram.com/godbuildmichael?igsh=MTcwaWlidHRheWxkcA=="target="blank">Instagram</a></li>
         <li><a href="https://www.threads.com/@godbuildmichael" target="blank">Threads</a></li>
