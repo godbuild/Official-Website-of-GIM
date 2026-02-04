@@ -134,6 +134,37 @@ const footer = el('footer', { class: 'site-footer' });
 footer.innerHTML = `<div class="container"><small>Copyright &copy; ${new Date().getFullYear()}. Godbuild Michael</small></div>`;
 document.body.appendChild(footer);
 
+const aboutText = document.getElementById("aboutText");
+const toggleBtn = document.getElementById("toggleBtn");
+
+function shouldShowReadMore() {
+  // Temporarily remove clamp to get full height
+  aboutText.classList.remove("collapsed");
+  const fullHeight = aboutText.scrollHeight;
+
+  // Restore collapsed state
+  aboutText.classList.add("collapsed");
+  const collapsedHeight = aboutText.clientHeight;
+
+  // Show button only if text overflows
+  if (fullHeight > collapsedHeight) {
+    toggleBtn.style.display = "inline";
+  } else {
+    toggleBtn.style.display = "none";
+    aboutText.classList.remove("collapsed");
+  }
+}
+
+toggleBtn.addEventListener("click", () => {
+  const isCollapsed = aboutText.classList.contains("collapsed");
+
+  aboutText.classList.toggle("collapsed", !isCollapsed);
+  aboutText.classList.toggle("expanded", isCollapsed);
+
+  toggleBtn.textContent = isCollapsed ? "Read less" : "Continue";
+});
+
+
 // toast container for in-page messages
 const toast = el('div', { class: 'toast hidden', text: '' });
 document.body.appendChild(toast);
@@ -258,6 +289,8 @@ function connectEvents() {
 }
 connectEvents();
 
+// Run once on page load
+window.addEventListener("load", shouldShowReadMore);
 // Expose some helpers for admin/testing in the console:
 window.GodbuildSite = {
   requestNotificationPermission,
