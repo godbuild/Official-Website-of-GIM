@@ -89,6 +89,7 @@ contactSection.innerHTML = `<h2>Contact</h2>
         <li><a href="https://www.instagram.com/godbuildmichael?igsh=MTcwaWlidHRheWxkcA=="target="blank">Instagram</a></li>
         <li><a href="https://www.threads.com/@godbuildmichael" target="blank">Threads</a></li>
         <li><a href="https://x.com/godbuildmichael" target="blank">X</a></li>
+		    <li><a href="https://rondukeup.blogspot.com/" target="blank">My Blogs</a></li>
       </ul>
     </div>
   </div>`;
