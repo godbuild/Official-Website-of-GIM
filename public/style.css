@@ -255,3 +255,33 @@ main{
 @media (prefers-reduced-motion: reduce){
   .slider img, .slider, .hero-overlay, .main-header { transition: none !important; animation: none !important; }
 }
+
+.about {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #222;
+  overflow: hidden;
+}
+
+/* collapsed */
+.about.collapsed {
+  max-height: 180px;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* expanded */
+.about.expanded {
+  max-height: none;
+}
+
+.read-more {
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
