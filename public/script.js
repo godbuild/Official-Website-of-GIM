@@ -68,6 +68,40 @@ document.body.appendChild(mainHeader);
 const main = el('main', { class: 'container' });
 const factsSection = el('section', { class: 'section facts', attrs: { id: 'facts' } });
 factsSection.innerHTML = `<h2>Facts about me</h2>
+<div class="about-container">
+  <div id="aboutText" class="about collapsed">
+    <strong>Godbuild Imoh Michael</strong>, simply known as <strong>Godbuild</strong>, was born on
+    <strong>Monday, January 3, 2011 (C.E.)</strong>, at the University of Uyo Teaching Hospital (UUTH),
+    Uyo, Akwa Ibom State, Nigeria.<br><br>
+
+    He was born into the family of <strong>Mr. and Mrs. Imoh Michael</strong>, natives of
+    <strong>Otoro Abak</strong> and <strong>Oruk Anam</strong> respectively, both in
+    <strong>Abak Local Government Area</strong>, Akwa Ibom State. He has resided in
+    <strong>Eket</strong> since birth.<br><br>
+
+    Godbuild is the <strong>firstborn child</strong> of the family. He is followed by a sister born
+    in <strong>2012</strong>, a brother born in <strong>2015</strong>, and another sister born in
+    <strong>2020</strong>.<br><br>
+
+    He is a worshipper at <strong>The Redeemed Christian Church of God (RCCG)</strong>. He began his
+    early education at <strong>Christ Redeemers Academy, Eket (2014–2017)</strong>, where he skipped
+    Nursery 1 due to academic excellence and proceeded directly to Nursery 2.<br><br>
+
+    He continued his primary education at <strong>Christian Discipleship Academy, Eket (2017–2020)</strong>.
+    The COVID-19 pandemic disrupted his schooling in 2020, preventing full completion of Primary 5.<br><br>
+
+    Godbuild proceeded to <strong>Faith Academy, Eket</strong> in 2020, where he is currently in
+    <strong>SS3</strong>. He obtained his <strong>First School Leaving Certificate</strong> in 2021.<br><br>
+
+    Godbuild is a <strong>dynamic and purpose-driven individual</strong>, a believer in Christ,
+    a published writer of <em>“Born to Be Great”</em>, a songwriter, and a creative problem solver.
+    He is an active learner in technology and an <strong>aspiring software developer</strong>,
+    currently an <strong>amateur web designer</strong>. His favorite sport is <strong>football</strong>.
+  </div>
+
+  <button id="toggleBtn" class="read-more">Continue</button>
+</div>
+
 main.appendChild(factsSection);
 
 const contactSection = el('section', { class: 'section', attrs: { id: 'contact' } });
