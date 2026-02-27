@@ -250,9 +250,6 @@
         <div class="stream-option" onclick="alert('Stream feature coming soon!'); closeStreamModal();">
           <i class="fas fa-circle"></i> <span>Stream</span>
         </div>
-        <div class="stream-option" onclick="showUploadModal()">
-          <i class="fas fa-upload"></i> <span>Upload Videos</span>
-        </div>
         <div class="stream-option" onclick="showPollModal()">
           <i class="fa-solid fa-square-poll-vertical"></i> <span>Live Poll</span>
         </div>
@@ -417,36 +414,8 @@
     function closeStatsModal() { document.getElementById('statsModal').classList.remove('show'); }
     function showStreamModal() { document.getElementById('streamModal').classList.add('show'); }
     function closeStreamModal() { document.getElementById('streamModal').classList.remove('show'); }
-    function showUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
-    function closeUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
     function showPollModal() { document.getElementById('pollModal').classList.add('show'); }
     function closePollModal() { document.getElementById('pollModal').classList.remove('show'); }
-
-    // Upload video
-    async function uploadVideo() {
-      const file = document.getElementById('videoFile').files[0];
-      if (!file) { alert('Select a file'); return; }
-      const formData = new FormData(); formData.append('video', file);
-      const prog = document.getElementById('uploadProgress'); prog.style.display = 'block';
-      const fill = document.querySelector('.progress-fill'); fill.style.width = '0%';
-      try {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api/upload/video', true);
-        xhr.upload.onprogress = (e) => { if (e.lengthComputable) fill.style.width = (e.loaded/e.total*100)+'%'; };
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
-            document.getElementById('uploadResult').innerHTML = `<p style="color:#10b981;">✅ Uploaded! <a href="${data.url}" target="_blank">View</a></p>`;
-            fill.style.width = '100%';
-          } else {
-            const err = JSON.parse(xhr.responseText);
-            document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ ${err.error}</p>`;
-          }
-        };
-        xhr.onerror = () => document.getElementById('uploadResult').innerHTML = '<p style="color:#ff4444;">❌ Upload failed</p>';
-        xhr.send(formData);
-      } catch(e) { document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ ${e.message}</p>`; }
-    }
 
     // Create poll
     async function createPoll() {
