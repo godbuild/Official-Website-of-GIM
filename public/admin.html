@@ -561,6 +561,91 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Stream Modal (larger, like stats modal) */
+.stream-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 20000;
+  justify-content: center;
+  align-items: center;
+}
+
+.stream-modal.show {
+  display: flex;
+}
+
+.stream-modal-content {
+  background: #0f1a2a;
+  color: #e6eef6;
+  max-width: 500px;
+  width: 90%;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  animation: fadeIn 0.3s;
+}
+
+.stream-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.stream-modal-header h2 {
+  color: #ffaa00;
+  font-size: 1.8rem;
+}
+
+.close-stream-btn {
+  background: none;
+  border: none;
+  color: #9aa4b2;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-stream-btn:hover {
+  color: #ff4444;
+}
+
+.stream-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stream-option {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+}
+
+.stream-option:hover {
+  background: rgba(255,170,0,0.2);
+  transform: translateX(5px);
+}
+
+.stream-option i {
+  font-size: 2rem;
+  color: #ffaa00;
+  width: 2.5rem;
+  text-align: center;
+}
   </style>
 </head>
 <body>
@@ -715,24 +800,26 @@
     </div>
   </div>
 
-<!-- ========== BOTTOM STREAM POPUP (with Live Poll) ========== -->
-<div class="stream-popup" id="streamPopup">
-  <div class="stream-popup-header">
-    <h3><i class="fas fa-video"></i> Stream & Poll</h3>
-    <button class="close-stream-btn" onclick="closeStreamPopup()">&times;</button>
-  </div>
-  <div class="stream-options">
-    <div class="stream-option" onclick="startLiveStream()">
-      <i class="fas fa-circle"></i>
-      <span>Live Stream</span>
+<!-- ========== STREAM MODAL (NEW) ========== -->
+<div class="stream-modal" id="streamModal">
+  <div class="stream-modal-content">
+    <div class="stream-modal-header">
+      <h2><i class="fas fa-video"></i> Stream & Media</h2>
+      <button class="close-stream-btn" onclick="closeStreamModal()">&times;</button>
     </div>
-    <div class="stream-option" onclick="uploadVideo()">
-      <i class="fas fa-upload"></i>
-      <span>Upload Videos</span>
-    </div>
-    <div class="stream-option" onclick="startLivePoll()">
-      <i class="fa-solid fa-square-poll-vertical"></i>
-      <span>Live Poll</span>
+    <div class="stream-options">
+      <div class="stream-option" onclick="startStream()">
+        <i class="fas fa-circle"></i>
+        <span>Stream</span>
+      </div>
+      <div class="stream-option" onclick="uploadVideo()">
+        <i class="fas fa-upload"></i>
+        <span>Upload Videos</span>
+      </div>
+      <div class="stream-option" onclick="startLivePoll()">
+        <i class="fa-solid fa-square-poll-vertical"></i>
+        <span>Live Poll</span>
+      </div>
     </div>
   </div>
 </div>
@@ -960,27 +1047,30 @@
       document.getElementById('statsModal').classList.remove('show');
     }
 
-    function showStreamPopup() {
-      document.getElementById('streamPopup').classList.add('show');
-    }
-    function closeStreamPopup() {
-      document.getElementById('streamPopup').classList.remove('show');
-    }
+// ---------- Stream Modal Functions ----------
+function showStreamModal() {
+  document.getElementById('streamModal').classList.add('show');
+}
 
-    // Placeholder functions for stream options
-    function startLiveStream() {
-      alert('🎥 Live Stream feature coming soon!');
-      closeStreamPopup();
-    }
-    function uploadVideo() {
-      alert('📤 Upload Videos feature coming soon!');
-      closeStreamPopup();
-    }
-     // Placeholder for Live Poll
-     function startLivePoll() {
-     alert('📊 Live Poll feature coming soon!');
-     closeStreamPopup();
-    }
+function closeStreamModal() {
+  document.getElementById('streamModal').classList.remove('show');
+}
+
+// Placeholder functions for the three options
+function startStream() {
+  alert('🎥 Stream feature coming soon!');
+  closeStreamModal();
+}
+
+function uploadVideo() {
+  alert('📤 Upload Videos feature coming soon!');
+  closeStreamModal();
+}
+
+function startLivePoll() {
+  alert('📊 Live Poll feature coming soon!');
+  closeStreamModal();
+}
     // Keyboard shortcut Ctrl+Enter
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.key === 'Enter') {
