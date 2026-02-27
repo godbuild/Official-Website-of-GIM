@@ -1,33 +1,10 @@
 const express = require('express');
 const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🔐 Secret key (must match admin.html)
 const ADMIN_SECRET = process.env.BROADCAST_SECRET || "gim@admin!";
-
-// Configure multer for video uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, 'public', 'uploads', 'videos');
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + ext);
-  }
-});
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    const allowed = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'];
-    allowed.includes(file.mimetype) ? cb(null, true) : cb(new Error('Only video files allowed!'));
-  },
-  limits: { fileSize: 500 * 1024 * 1024 }
-});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -126,13 +103,7 @@ app.get('/api/stats/detailed', (req, res) => {
   const average = (visitors.length / daysSince).toFixed(1);
   res.json({ today, week, month, average, clicks: 0, views: 0, perVisitor: 0 });
 });
-
-// ---------- Video upload ----------
-app.post('/api/upload/video', upload.single('video'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No video uploaded' });
-  res.json({ success: true, url: `/uploads/videos/${req.file.filename}` });
-});
-
+ 
 // ---------- Live poll ----------
 let polls = [];
 let nextPollId = 1;
