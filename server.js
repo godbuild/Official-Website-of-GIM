@@ -1,32 +1,26 @@
-// server.js - Updated with Unique Visitor Tracking
-
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 🔐 Secret key for broadcast protection
+// 🔐 Secret key for broadcast (must match admin.html)
 const ADMIN_SECRET = process.env.BROADCAST_SECRET || "gim@admin!";
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ---------- Visitor tracking ----------
 let clients = [];
-let uniqueVisitors = new Set(); // Store unique IP addresses
-let totalUniqueVisitors = 0; // Counter
+let visitors = []; // { ip, firstVisit }
 
-// Middleware to track unique visitors
+// Middleware to track unique visitors by IP
 app.use((req, res, next) => {
-  // Get client IP address
+  // Get client IP (handles proxies)
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  
-  // Add to set if not already present
-  if (!uniqueVisitors.has(ip)) {
-    uniqueVisitors.add(ip);
-    totalUniqueVisitors = uniqueVisitors.size;
-    console.log(`✨ New unique visitor! Total: ${totalUniqueVisitors}`);
+  if (ip && !visitors.find(v => v.ip === ip)) {
+    visitors.push({ ip, firstVisit: Date.now() });
+    console.log(`✨ New unique visitor. Total: ${visitors.length}`);
   }
-  
   next();
 });
 
@@ -41,17 +35,14 @@ app.get('/events', (req, res) => {
   res.flushHeaders();
 
   const clientId = Date.now();
-  const newClient = {
-    id: clientId,
-    res
-  };
+  const newClient = { id: clientId, res };
   clients.push(newClient);
 
   // Send welcome event with visitor count
   res.write(`data: ${JSON.stringify({ 
     title: 'Connected', 
     body: 'You are now connected to live updates!',
-    totalVisitors: totalUniqueVisitors
+    totalVisitors: visitors.length
   })}\n\n`);
 
   req.on('close', () => {
@@ -62,22 +53,18 @@ app.get('/events', (req, res) => {
   console.log(`New client connected: ${clientId}. Total clients: ${clients.length}`);
 });
 
-// Broadcast endpoint (PROTECTED)
+// Broadcast endpoint (protected)
 app.post('/broadcast', (req, res) => {
   const payload = req.body || {};
-  
-  // Secret key check
   const providedSecret = payload.secret;
-  
+
   if (!providedSecret || providedSecret !== ADMIN_SECRET) {
-    console.warn('⚠️ Unauthorized broadcast attempt detected!');
-    return res.status(403).json({ 
-      error: 'Unauthorized: Invalid or missing secret key'
-    });
+    console.warn('⚠️ Unauthorized broadcast attempt');
+    return res.status(403).json({ error: 'Unauthorized: Invalid secret' });
   }
-  
+
   if (!payload.title || !payload.body) {
-    return res.status(400).json({ error: 'Title and body are required' });
+    return res.status(400).json({ error: 'Title and body required' });
   }
 
   const data = JSON.stringify({
@@ -99,41 +86,57 @@ app.post('/broadcast', (req, res) => {
   });
 
   console.log(`✅ Broadcast sent to ${sentCount} clients: "${payload.title}"`);
-  res.json({ 
-    ok: true, 
-    sentTo: sentCount,
-    message: 'Update broadcast successfully'
-  });
+  res.json({ ok: true, sentTo: sentCount });
 });
 
 // Keepalive ping
 setInterval(() => {
   clients.forEach(c => {
-    try { 
-      c.res.write(': ping\n\n'); 
-    } catch (err) {
+    try { c.res.write(': ping\n\n'); } catch (err) {
       clients = clients.filter(client => client.id !== c.id);
     }
   });
 }, 30000);
 
-// Enhanced health check endpoint with visitor stats
+// Health endpoint (active clients)
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     clients: clients.length,
-    totalUniqueVisitors: totalUniqueVisitors,
-    uptime: process.uptime(),
-    serverTime: new Date().toISOString()
+    totalUniqueVisitors: visitors.length,
+    uptime: process.uptime()
   });
 });
 
-// Endpoint to get total unique visitors (for admin)
-app.get('/api/stats/visitors', (req, res) => {
-  // Simple check - in production, add admin auth
-  res.json({ 
-    totalUniqueVisitors: totalUniqueVisitors,
-    activeVisitors: clients.length
+// Detailed stats endpoint (real data)
+app.get('/api/stats/detailed', (req, res) => {
+  const now = Date.now();
+  const oneDay = 24 * 60 * 60 * 1000;
+  const oneWeek = 7 * oneDay;
+  const oneMonth = 30 * oneDay; // approximate
+
+  // Count visitors per period
+  const today = visitors.filter(v => (now - v.firstVisit) < oneDay).length;
+  const thisWeek = visitors.filter(v => (now - v.firstVisit) < oneWeek).length;
+  const thisMonth = visitors.filter(v => (now - v.firstVisit) < oneMonth).length;
+
+  // Average daily visitors (since first visitor)
+  let average = 0;
+  if (visitors.length > 0) {
+    const firstDate = Math.min(...visitors.map(v => v.firstVisit));
+    const daysSince = Math.ceil((now - firstDate) / oneDay) || 1;
+    average = (visitors.length / daysSince).toFixed(1);
+  }
+
+  // For clicks/views we'll add later – returning 0 for now
+  res.json({
+    today,
+    week: thisWeek,
+    month: thisMonth,
+    average,
+    clicks: 0,
+    views: 0,
+    perVisitor: 0
   });
 });
 
@@ -141,8 +144,7 @@ app.get('/api/stats/visitors', (req, res) => {
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📡 SSE endpoint: http://localhost:${PORT}/events`);
-    console.log(`📊 Visitor tracking active - Total so far: ${totalUniqueVisitors}`);
+    console.log(`📊 Visitor tracking active – total so far: ${visitors.length}`);
   });
 }
 
