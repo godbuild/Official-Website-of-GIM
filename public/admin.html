@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Broadcast Admin - Godbuild Site</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Chart.js for pie chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
+    /* (Keep all your existing styles, then add the new ones below) */
     * {
       margin: 0;
       padding: 0;
@@ -146,7 +149,6 @@
       font-size: 1.5rem;
     }
 
-    /* Quick buttons, form groups, etc. (same as before) */
     .quick-buttons {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -238,7 +240,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* Result message */
     .result-message {
       margin-top: 20px;
       padding: 15px;
@@ -260,7 +261,6 @@
       display: block;
     }
 
-    /* History list */
     .history-list {
       max-height: 200px;
       overflow-y: auto;
@@ -293,7 +293,7 @@
       margin-left: 8px;
     }
 
-    /* Login Modal (like privacy policy modal) */
+    /* Login Modal (unchanged) */
     .login-modal {
       display: none;
       position: fixed;
@@ -313,8 +313,8 @@
     }
 
     .login-content {
-      background: var(--gim--card, #091722);
-      color: var(--gim--text, #e6eef6);
+      background: #091722;
+      color: #e6eef6;
       max-width: 400px;
       width: 90%;
       padding: 2rem;
@@ -390,30 +390,181 @@
       display: block;
     }
 
+    /* ========== NEW MODAL FOR STATISTICS ========== */
+    .stats-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 20000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stats-modal.show {
+      display: flex;
+    }
+
+    .stats-modal-content {
+      background: #0f1a2a;
+      color: #e6eef6;
+      max-width: 700px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 2rem;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      position: relative;
+      animation: fadeIn 0.3s;
+    }
+
+    .stats-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-modal-header h2 {
+      color: #ffaa00;
+      font-size: 1.8rem;
+    }
+
+    .close-stats-btn {
+      background: none;
+      border: none;
+      color: #9aa4b2;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .close-stats-btn:hover {
+      color: #ff4444;
+    }
+
+    .stats-grid-detailed {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.05);
+      padding: 1.2rem;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .stat-box h3 {
+      color: #9aa4b2;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-box .number {
+      font-size: 2.2rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, #ff4444, #ffaa00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .chart-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 2rem auto;
+    }
+
+    /* ========== BOTTOM STREAM POPUP ========== */
+    .stream-popup {
+      position: fixed;
+      bottom: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 350px;
+      background: #0f1a2a;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -5px 30px rgba(0,0,0,0.5);
+      z-index: 15000;
+      transition: bottom 0.3s ease;
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stream-popup.show {
+      bottom: 0;
+    }
+
+    .stream-popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      color: #ffaa00;
+    }
+
+    .stream-popup-header h3 {
+      font-size: 1.2rem;
+    }
+
+    .close-stream-btn {
+      background: none;
+      border: none;
+      color: #9aa4b2;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .stream-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .stream-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .stream-option:hover {
+      background: rgba(255,170,0,0.2);
+    }
+
+    .stream-option i {
+      font-size: 1.5rem;
+      color: #ffaa00;
+    }
+
+    .stream-option span {
+      font-size: 1.1rem;
+    }
+
     @media (max-width: 600px) {
       .stats-grid {
         grid-template-columns: 1fr;
       }
-      
-      .header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-      }
-      
-      .action-buttons {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-        justify-content: center;
+      .stats-grid-detailed {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Login Modal (like privacy policy modal) -->
+  <!-- Login Modal (same as before) -->
   <div class="login-modal" id="loginModal">
     <div class="login-content">
       <h2><i class="fa-solid fa-lock"></i> Admin Login</h2>
@@ -431,7 +582,7 @@
     </div>
   </div>
 
-  <!-- Main Admin Content (hidden until login) -->
+  <!-- Main Admin Content -->
   <div class="main-content" id="mainContent">
     <div class="container">
       <!-- Header with Icons -->
@@ -441,127 +592,153 @@
           <p>Send instant notifications to everyone visiting your site</p>
         </div>
         <div class="header-icons">
-          <div class="header-icon" id="statsIcon" onclick="showStatsDetails()" title="Statistics Details">
-            <i class="fas fa-chart-bar"></i>
+          <div class="header-icon" id="statsIcon" onclick="showStatsModal()" title="Statistics Dashboard">
+            <i class="fas fa-chart-pie"></i>
           </div>
-          <div class="header-icon" id="streamIcon" onclick="showStreamOptions()" title="Live Streaming">
+          <div class="header-icon" id="streamIcon" onclick="showStreamPopup()" title="Live Streaming">
             <i class="fas fa-video"></i>
           </div>
         </div>
       </div>
 
-      <!-- Stats Cards -->
+      <!-- Stats Cards (existing) -->
       <div class="stats-grid">
-        <!-- Active Visitors -->
         <div class="stat-card">
-          <div class="stat-header">
-            <i class="fas fa-users"></i>
-            <span>Real-time</span>
-          </div>
+          <div class="stat-header"><i class="fas fa-users"></i><span>Real-time</span></div>
           <div class="stat-value" id="activeVisitors">0</div>
           <div class="stat-label">Active Visitors Now</div>
+          <div class="stat-footer">Updated every 5 seconds</div>
         </div>
-
-        <!-- Total Broadcasts -->
         <div class="stat-card">
-          <div class="stat-header">
-            <i class="fas fa-bullhorn"></i>
-            <span>Total</span>
-          </div>
+          <div class="stat-header"><i class="fas fa-bullhorn"></i><span>Total</span></div>
           <div class="stat-value" id="totalBroadcasts">0</div>
           <div class="stat-label">Broadcasts Sent</div>
           <div class="stat-footer" id="lastBroadcastTime">Last: -</div>
         </div>
-
-        <!-- Total Unique Visitors (NEW) -->
         <div class="stat-card">
-          <div class="stat-header">
-            <i class="fas fa-address-book"></i>
-            <span>All Time</span>
-          </div>
+          <div class="stat-header"><i class="fas fa-address-book"></i><span>All Time</span></div>
           <div class="stat-value" id="totalVisitors">0</div>
           <div class="stat-label">Unique Visitors</div>
+          <div class="stat-footer">Since site launch</div>
         </div>
       </div>
 
-      <!-- Quick Templates -->
+      <!-- Quick Templates (existing) -->
       <div class="admin-card">
         <h2><i class="fas fa-bolt"></i> Quick Templates</h2>
         <div class="quick-buttons">
-          <button class="quick-btn" onclick="setTemplate('welcome')">
-            <i class="fas fa-hand-wave"></i> Welcome
-          </button>
-          <button class="quick-btn" onclick="setTemplate('update')">
-            <i class="fas fa-star"></i> New Update
-          </button>
-          <button class="quick-btn" onclick="setTemplate('blog')">
-            <i class="fas fa-blog"></i> New Blog
-          </button>
-          <button class="quick-btn" onclick="setTemplate('event')">
-            <i class="fas fa-calendar"></i> Event
-          </button>
-          <button class="quick-btn" onclick="setTemplate('maintenance')">
-            <i class="fas fa-tools"></i> Maintenance
-          </button>
-          <button class="quick-btn" onclick="clearForm()">
-            <i class="fas fa-eraser"></i> Clear
-          </button>
+          <button class="quick-btn" onclick="setTemplate('welcome')"><i class="fas fa-hand-wave"></i> Welcome</button>
+          <button class="quick-btn" onclick="setTemplate('update')"><i class="fas fa-star"></i> New Update</button>
+          <button class="quick-btn" onclick="setTemplate('blog')"><i class="fas fa-blog"></i> New Blog</button>
+          <button class="quick-btn" onclick="setTemplate('event')"><i class="fas fa-calendar"></i> Event</button>
+          <button class="quick-btn" onclick="setTemplate('maintenance')"><i class="fas fa-tools"></i> Maintenance</button>
+          <button class="quick-btn" onclick="clearForm()"><i class="fas fa-eraser"></i> Clear</button>
         </div>
       </div>
 
-      <!-- Broadcast Form -->
+      <!-- Broadcast Form (existing) -->
       <div class="admin-card">
         <h2><i class="fas fa-paper-plane"></i> Compose Broadcast</h2>
-        
         <div class="form-group">
           <label><i class="fas fa-heading"></i> Title *</label>
           <input type="text" id="title" placeholder="e.g., New Blog Post!">
         </div>
-
         <div class="form-group">
           <label><i class="fas fa-align-left"></i> Message *</label>
           <textarea id="body" placeholder="Enter your message here..."></textarea>
         </div>
-
         <div class="form-group">
           <label><i class="fas fa-link"></i> URL (optional)</label>
           <input type="url" id="url" placeholder="https://your-site.com/page">
         </div>
-
         <div class="form-group">
           <label><i class="fas fa-image"></i> Icon URL (optional)</label>
           <input type="url" id="icon" placeholder="/images/logo.png">
           <small style="color: #9aa4b2; display: block; margin-top: 5px;">Leave empty for default icon</small>
         </div>
-
         <div class="action-buttons">
-          <button class="btn btn-secondary" onclick="testBroadcast()">
-            <i class="fas fa-vial"></i> Test (Console)
-          </button>
-          <button class="btn btn-primary" onclick="sendBroadcast()">
-            <i class="fas fa-bullhorn"></i> Send Broadcast
-          </button>
+          <button class="btn btn-secondary" onclick="testBroadcast()"><i class="fas fa-vial"></i> Test (Console)</button>
+          <button class="btn btn-primary" onclick="sendBroadcast()"><i class="fas fa-bullhorn"></i> Send Broadcast</button>
         </div>
-
         <div id="result" class="result-message"></div>
       </div>
 
-      <!-- Broadcast History -->
+      <!-- Broadcast History (existing) -->
       <div class="admin-card">
         <h2><i class="fas fa-history"></i> Recent Broadcasts</h2>
-        <div id="history" class="history-list">
-          <!-- History will be populated here -->
-        </div>
-      </div>
-
-      <div style="text-align: center; margin-top: 20px; color: #9aa4b2; font-size: 0.9rem;">
-        <i class="fas fa-lock"></i> Secure Admin Area
+        <div id="history" class="history-list"></div>
       </div>
     </div>
   </div>
 
+  <!-- ========== STATISTICS MODAL (NEW) ========== -->
+  <div class="stats-modal" id="statsModal">
+    <div class="stats-modal-content">
+      <div class="stats-modal-header">
+        <h2><i class="fas fa-chart-pie"></i> Visitor Statistics</h2>
+        <button class="close-stats-btn" onclick="closeStatsModal()">&times;</button>
+      </div>
+
+      <!-- Detailed stats boxes -->
+      <div class="stats-grid-detailed">
+        <div class="stat-box">
+          <h3>Today</h3>
+          <div class="number" id="statsToday">0</div>
+        </div>
+        <div class="stat-box">
+          <h3>This Month</h3>
+          <div class="number" id="statsMonth">0</div>
+        </div>
+        <div class="stat-box">
+          <h3>Average Daily</h3>
+          <div class="number" id="statsAvg">0</div>
+        </div>
+        <div class="stat-box">
+          <h3>Total Clicks</h3>
+          <div class="number" id="statsClicks">0</div>
+        </div>
+        <div class="stat-box">
+          <h3>Total Views</h3>
+          <div class="number" id="statsViews">0</div>
+        </div>
+        <div class="stat-box">
+          <h3>Views/Visitor</h3>
+          <div class="number" id="statsPerVisitor">0</div>
+        </div>
+      </div>
+
+      <!-- Pie chart container -->
+      <div class="chart-container">
+        <canvas id="visitorPieChart"></canvas>
+      </div>
+      <p style="text-align: center; color: #9aa4b2; font-size: 0.9rem;">* Data updates in real-time (mock data for now)</p>
+    </div>
+  </div>
+
+<!-- ========== BOTTOM STREAM POPUP (with Live Poll) ========== -->
+<div class="stream-popup" id="streamPopup">
+  <div class="stream-popup-header">
+    <h3><i class="fas fa-video"></i> Stream & Poll</h3>
+    <button class="close-stream-btn" onclick="closeStreamPopup()">&times;</button>
+  </div>
+  <div class="stream-options">
+    <div class="stream-option" onclick="startLiveStream()">
+      <i class="fas fa-circle"></i>
+      <span>Live Stream</span>
+    </div>
+    <div class="stream-option" onclick="uploadVideo()">
+      <i class="fas fa-upload"></i>
+      <span>Upload Videos</span>
+    </div>
+    <div class="stream-option" onclick="startLivePoll()">
+      <i class="fa-solid fa-square-poll-vertical"></i>
+      <span>Live Poll</span>
+    </div>
+  </div>
+</div>
+
   <script>
-    // Admin password (in production, this should match server secret)
+    // ---------- Admin password (UPDATED to gim@admin!) ----------
     const ADMIN_PASSWORD = "gim@admin!";
 
     // Store broadcast history and stats
@@ -571,93 +748,102 @@
       last: localStorage.getItem('lastBroadcast') || null
     };
 
-    // Total unique visitors (stored in localStorage for demo - in production, this comes from server)
-   // Fetch real stats from server
-async function fetchStats() {
-  try {
-    const response = await fetch('/api/stats/visitors');
-    const data = await response.json();
-    
-    // Update active visitors (from health check we already do separately)
-    // But we'll update total visitors here
-    document.getElementById('totalVisitors').textContent = formatNumber(data.totalUniqueVisitors || 0);
-    
-    // Optionally update active visitors too if you want to unify
-    // But we'll keep the separate health check for active visitors
-  } catch (err) {
-    console.log('Could not fetch visitor stats');
-  }
-}
-
-// Call it initially and every 10 seconds
-fetchStats();
-setInterval(fetchStats, 10000);
-
     // Format numbers with K, M, B
     function formatNumber(num) {
-      if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + 'B';
-      }
-      if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-      }
-      if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
-      }
+      if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
       return num.toString();
     }
 
-    // Update stats display with formatting
+    // Update main stats display
     function updateStats() {
-      document.getElementById('activeVisitors').textContent = '0'; // Will be updated from server
       document.getElementById('totalBroadcasts').textContent = formatNumber(stats.total);
-      document.getElementById('totalVisitors').textContent = formatNumber(totalVisitors);
-      
       const lastTime = stats.last ? new Date(stats.last).toLocaleTimeString() : '-';
       document.getElementById('lastBroadcastTime').textContent = `Last: ${lastTime}`;
     }
 
-    // Check server health and get active clients
+    // Fetch real stats from server
+    async function fetchStats() {
+      try {
+        const response = await fetch('/api/stats/visitors');
+        const data = await response.json();
+        document.getElementById('totalVisitors').textContent = formatNumber(data.totalUniqueVisitors || 0);
+        document.getElementById('activeVisitors').textContent = data.activeVisitors || 0;
+
+        // Also update the detailed modal stats (using mock for now)
+        // In future, you can extend the API to return per-day, per-month data
+        document.getElementById('statsToday').textContent = Math.floor(Math.random() * 50) + 10; // mock
+        document.getElementById('statsMonth').textContent = Math.floor(Math.random() * 500) + 100; // mock
+        document.getElementById('statsAvg').textContent = Math.floor(Math.random() * 30) + 5; // mock
+        document.getElementById('statsClicks').textContent = Math.floor(Math.random() * 200) + 50; // mock
+        document.getElementById('statsViews').textContent = Math.floor(Math.random() * 1000) + 200; // mock
+        const perVisitor = (Math.random() * 5 + 1).toFixed(1);
+        document.getElementById('statsPerVisitor').textContent = perVisitor;
+
+        // Update pie chart with mock data
+        updatePieChart();
+      } catch (err) {
+        console.log('Could not fetch visitor stats', err);
+      }
+    }
+
+    // Pie chart instance
+    let pieChart = null;
+    function updatePieChart() {
+      const ctx = document.getElementById('visitorPieChart').getContext('2d');
+      if (pieChart) pieChart.destroy();
+      pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Today', 'This Week', 'This Month'],
+          datasets: [{
+            data: [
+              parseInt(document.getElementById('statsToday').textContent),
+              parseInt(document.getElementById('statsToday').textContent) * 7,
+              parseInt(document.getElementById('statsMonth').textContent)
+            ],
+            backgroundColor: ['#ff4444', '#ffaa00', '#7dd3fc'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { labels: { color: '#e6eef6' } }
+          }
+        }
+      });
+    }
+
+    // Call fetchStats initially and every 10 seconds
+    fetchStats();
+    setInterval(fetchStats, 10000);
+
+    // Check server health for active visitors (existing)
     async function checkServerHealth() {
       try {
         const response = await fetch('/health');
         const data = await response.json();
         document.getElementById('activeVisitors').textContent = data.clients || 0;
-      } catch (err) {
-        console.log('Server health check failed');
-      }
+      } catch (err) {}
     }
-
-    // Update health every 5 seconds
     setInterval(checkServerHealth, 5000);
     checkServerHealth();
 
-    // Login functions
+    // ---------- Login functions ----------
     function showLoginModal() {
       document.getElementById('loginModal').classList.add('show');
-      document.getElementById('adminPassword').value = '';
-      document.getElementById('greetingMessage').classList.remove('show');
     }
-
     function closeLoginModal() {
       document.getElementById('loginModal').classList.remove('show');
     }
-
     function handleKeyPress(e) {
-      if (e.key === 'Enter') {
-        verifyPassword();
-      }
+      if (e.key === 'Enter') verifyPassword();
     }
-
     function verifyPassword() {
       const password = document.getElementById('adminPassword').value;
-      
       if (password === ADMIN_PASSWORD) {
-        // Show greeting
-        const greeting = document.getElementById('greetingMessage');
-        greeting.classList.add('show');
-        
-        // After 1.5 seconds, close modal and show main content
+        document.getElementById('greetingMessage').classList.add('show');
         setTimeout(() => {
           closeLoginModal();
           document.getElementById('mainContent').classList.add('visible');
@@ -666,103 +852,60 @@ setInterval(fetchStats, 10000);
         alert('Incorrect password!');
       }
     }
-
-    // Check if already logged in? For demo, always show login
     window.onload = function() {
       showLoginModal();
       updateStats();
       updateHistory();
     };
 
-    // Template presets
+    // ---------- Template functions (unchanged) ----------
     const templates = {
-      welcome: {
-        title: '👋 Welcome!',
-        body: 'Thanks for visiting my site! Feel free to explore.',
-        icon: '/images/logo.png'
-      },
-      update: {
-        title: '✨ New Update',
-        body: 'I\'ve added new content to my site. Check it out!',
-        icon: '/images/logo.png'
-      },
-      blog: {
-        title: '📝 New Blog Post',
-        body: 'Just published a new article. Read it now!',
-        url: 'https://godbuildim-deploy.vercel.app/#about',
-        icon: '/images/logo.png'
-      },
-      event: {
-        title: '🎉 Special Event',
-        body: 'Something exciting is happening! Stay tuned.',
-        icon: '/images/logo.png'
-      },
-      maintenance: {
-        title: '🔧 Quick Maintenance',
-        body: 'Site might be briefly unavailable. Thanks for patience!',
-        icon: '/images/logo.png'
-      }
+      welcome: { title: '👋 Welcome!', body: 'Thanks for visiting my site!', icon: '/images/logo.png' },
+      update: { title: '✨ New Update', body: 'I\'ve added new content.', icon: '/images/logo.png' },
+      blog: { title: '📝 New Blog Post', body: 'Just published a new article.', url: '#about', icon: '/images/logo.png' },
+      event: { title: '🎉 Special Event', body: 'Something exciting is happening!', icon: '/images/logo.png' },
+      maintenance: { title: '🔧 Quick Maintenance', body: 'Site might be briefly unavailable.', icon: '/images/logo.png' }
     };
-
-    // Set template
     function setTemplate(type) {
-      const template = templates[type];
-      if (template) {
-        document.getElementById('title').value = template.title || '';
-        document.getElementById('body').value = template.body || '';
-        document.getElementById('url').value = template.url || '';
-        document.getElementById('icon').value = template.icon || '';
+      const t = templates[type];
+      if (t) {
+        document.getElementById('title').value = t.title || '';
+        document.getElementById('body').value = t.body || '';
+        document.getElementById('url').value = t.url || '';
+        document.getElementById('icon').value = t.icon || '';
       }
     }
-
-    // Clear form
     function clearForm() {
       document.getElementById('title').value = '';
       document.getElementById('body').value = '';
       document.getElementById('url').value = '';
       document.getElementById('icon').value = '';
     }
-
-    // Show result
     function showResult(message, isSuccess = true) {
       const result = document.getElementById('result');
       result.textContent = message;
       result.className = `result-message ${isSuccess ? 'success' : 'error'}`;
-      setTimeout(() => {
-        result.style.display = 'none';
-      }, 5000);
+      setTimeout(() => { result.style.display = 'none'; }, 5000);
     }
-
-    // Test broadcast
     function testBroadcast() {
       const title = document.getElementById('title').value;
       const body = document.getElementById('body').value;
-
-      if (!title || !body) {
-        showResult('❌ Please fill in title and message', false);
-        return;
-      }
-
+      if (!title || !body) return showResult('❌ Fill in title and message', false);
       console.log('📢 TEST BROADCAST:', { title, body });
       showResult('✅ Check console (F12)');
     }
 
-    // Send broadcast (include secret)
+    // ---------- Send broadcast (UPDATED secret) ----------
     async function sendBroadcast() {
       const title = document.getElementById('title').value;
       const body = document.getElementById('body').value;
-
-      if (!title || !body) {
-        showResult('❌ Please fill in title and message', false);
-        return;
-      }
+      if (!title || !body) return showResult('❌ Fill in title and message', false);
 
       const payload = {
-        title: title,
-        body: body,
+        title, body,
         url: document.getElementById('url').value || null,
         icon: document.getElementById('icon').value || null,
-        secret: "gim@admin!" // Must match server.js
+        secret: "gim@admin!"   // <-- UPDATED SECRET
       };
 
       try {
@@ -771,23 +914,15 @@ setInterval(fetchStats, 10000);
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-
         const data = await response.json();
-
         if (response.ok) {
           stats.total++;
           stats.last = new Date().toISOString();
           localStorage.setItem('totalBroadcasts', stats.total);
           localStorage.setItem('lastBroadcast', stats.last);
-          
-          broadcastHistory.unshift({
-            title: title,
-            time: new Date().toLocaleTimeString(),
-            recipients: data.sentTo
-          });
+          broadcastHistory.unshift({ title, time: new Date().toLocaleTimeString(), recipients: data.sentTo });
           broadcastHistory = broadcastHistory.slice(0, 10);
           localStorage.setItem('broadcastHistory', JSON.stringify(broadcastHistory));
-          
           updateStats();
           updateHistory();
           showResult(`✅ Sent to ${data.sentTo} active visitor(s)!`);
@@ -800,15 +935,12 @@ setInterval(fetchStats, 10000);
       }
     }
 
-    // Update history
     function updateHistory() {
       const historyEl = document.getElementById('history');
-      
       if (broadcastHistory.length === 0) {
-        historyEl.innerHTML = '<div style="text-align: center; color: #9aa4b2; padding: 20px;"><i class="fas fa-exchange-alt"></i> Send your first broadcast to see history</div>';
+        historyEl.innerHTML = '<div style="text-align:center; color:#9aa4b2; padding:20px;"><i class="fas fa-exchange-alt"></i> Send your first broadcast</div>';
         return;
       }
-
       historyEl.innerHTML = broadcastHistory.map(item => `
         <div class="history-item">
           <span class="history-time">${item.time}</span>
@@ -818,16 +950,38 @@ setInterval(fetchStats, 10000);
       `).join('');
     }
 
-    // Icon functions (placeholders for now)
-    function showStatsDetails() {
-      alert(`📊 Statistics Details:\n\nActive Visitors: ${document.getElementById('activeVisitors').textContent}\nTotal Broadcasts: ${document.getElementById('totalBroadcasts').textContent}\nUnique Visitors: ${document.getElementById('totalVisitors').textContent}`);
+    // ---------- New Modal Functions ----------
+    function showStatsModal() {
+      document.getElementById('statsModal').classList.add('show');
+      // Refresh stats when opened
+      fetchStats();
+    }
+    function closeStatsModal() {
+      document.getElementById('statsModal').classList.remove('show');
     }
 
-    function showStreamOptions() {
-      alert('🎥 Live Streaming features coming soon!\n\nYou will be able to:\n• Start live video broadcasts\n• Stream to visitors\n• Interactive Q&A sessions');
+    function showStreamPopup() {
+      document.getElementById('streamPopup').classList.add('show');
+    }
+    function closeStreamPopup() {
+      document.getElementById('streamPopup').classList.remove('show');
     }
 
-    // Keyboard shortcut: Ctrl+Enter to send
+    // Placeholder functions for stream options
+    function startLiveStream() {
+      alert('🎥 Live Stream feature coming soon!');
+      closeStreamPopup();
+    }
+    function uploadVideo() {
+      alert('📤 Upload Videos feature coming soon!');
+      closeStreamPopup();
+    }
+     // Placeholder for Live Poll
+     function startLivePoll() {
+     alert('📊 Live Poll feature coming soon!');
+     closeStreamPopup();
+    }
+    // Keyboard shortcut Ctrl+Enter
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.key === 'Enter') {
         e.preventDefault();
