@@ -1,7 +1,7 @@
 {
-  "name": "gim-site",
+  "name": "official-website-of-gim",
   "version": "1.0.0",
-  "description": "Personal website with live notifications",
+  "description": "Personal website of Godbuild Imoh Michael",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
