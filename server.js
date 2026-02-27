@@ -1,6 +1,4 @@
-// server.js
-// Simple static server + SSE endpoint to broadcast updates to connected clients.
-// Now with secret key protection for the broadcast endpoint!
+// server.js - Updated with Unique Visitor Tracking
 
 const express = require('express');
 const path = require('path');
@@ -8,13 +6,29 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🔐 Secret key for broadcast protection
-// In production, use environment variable: process.env.BROADCAST_SECRET
-const ADMIN_SECRET = process.env.BROADCAST_SECRET || "gim032011"; // Change this to your secret!
+const ADMIN_SECRET = process.env.BROADCAST_SECRET || "Godbuild2026Secure!";
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 let clients = [];
+let uniqueVisitors = new Set(); // Store unique IP addresses
+let totalUniqueVisitors = 0; // Counter
+
+// Middleware to track unique visitors
+app.use((req, res, next) => {
+  // Get client IP address
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  
+  // Add to set if not already present
+  if (!uniqueVisitors.has(ip)) {
+    uniqueVisitors.add(ip);
+    totalUniqueVisitors = uniqueVisitors.size;
+    console.log(`✨ New unique visitor! Total: ${totalUniqueVisitors}`);
+  }
+  
+  next();
+});
 
 // SSE endpoint for real-time updates
 app.get('/events', (req, res) => {
@@ -22,7 +36,7 @@ app.get('/events', (req, res) => {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
-    'Access-Control-Allow-Origin': '*' // Allow connections from your domain
+    'Access-Control-Allow-Origin': '*'
   });
   res.flushHeaders();
 
@@ -33,13 +47,13 @@ app.get('/events', (req, res) => {
   };
   clients.push(newClient);
 
-  // Send a welcome event immediately when client connects
+  // Send welcome event with visitor count
   res.write(`data: ${JSON.stringify({ 
     title: 'Connected', 
-    body: 'You are now connected to live updates from Godbuild Imoh Michael\'s site!' 
+    body: 'You are now connected to live updates!',
+    totalVisitors: totalUniqueVisitors
   })}\n\n`);
 
-  // Remove client on connection close
   req.on('close', () => {
     clients = clients.filter(c => c.id !== clientId);
     console.log(`Client ${clientId} disconnected. Total clients: ${clients.length}`);
@@ -48,26 +62,22 @@ app.get('/events', (req, res) => {
   console.log(`New client connected: ${clientId}. Total clients: ${clients.length}`);
 });
 
-// Broadcast endpoint (PROTECTED with secret key)
+// Broadcast endpoint (PROTECTED)
 app.post('/broadcast', (req, res) => {
   const payload = req.body || {};
   
-  // 🔐 SECRET KEY CHECK - Only authorized requests can broadcast
+  // Secret key check
   const providedSecret = payload.secret;
   
   if (!providedSecret || providedSecret !== ADMIN_SECRET) {
     console.warn('⚠️ Unauthorized broadcast attempt detected!');
     return res.status(403).json({ 
-      error: 'Unauthorized: Invalid or missing secret key',
-      hint: 'You need to provide the correct secret key to broadcast'
+      error: 'Unauthorized: Invalid or missing secret key'
     });
   }
   
-  // Validate required fields
   if (!payload.title || !payload.body) {
-    return res.status(400).json({ 
-      error: 'Title and body are required' 
-    });
+    return res.status(400).json({ error: 'Title and body are required' });
   }
 
   const data = JSON.stringify({
@@ -84,8 +94,6 @@ app.post('/broadcast', (req, res) => {
       c.res.write(`data: ${data}\n\n`);
       sentCount++;
     } catch (err) {
-      console.error('Error sending to client:', err);
-      // Remove dead connection
       clients = clients.filter(client => client.id !== c.id);
     }
   });
@@ -98,25 +106,34 @@ app.post('/broadcast', (req, res) => {
   });
 });
 
-// Keepalive ping to prevent connection timeouts
+// Keepalive ping
 setInterval(() => {
   clients.forEach(c => {
     try { 
       c.res.write(': ping\n\n'); 
     } catch (err) {
-      // Remove dead connections
       clients = clients.filter(client => client.id !== c.id);
     }
   });
-}, 30000); // Send ping every 30 seconds
+}, 30000);
 
-// Health check endpoint
+// Enhanced health check endpoint with visitor stats
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     clients: clients.length,
+    totalUniqueVisitors: totalUniqueVisitors,
     uptime: process.uptime(),
     serverTime: new Date().toISOString()
+  });
+});
+
+// Endpoint to get total unique visitors (for admin)
+app.get('/api/stats/visitors', (req, res) => {
+  // Simple check - in production, add admin auth
+  res.json({ 
+    totalUniqueVisitors: totalUniqueVisitors,
+    activeVisitors: clients.length
   });
 });
 
@@ -125,11 +142,8 @@ if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
     console.log(`📡 SSE endpoint: http://localhost:${PORT}/events`);
-    console.log(`📢 Broadcast endpoint: http://localhost:${PORT}/broadcast`);
-    console.log(`🔐 Secret key protection is ACTIVE`);
-    console.log(`⚠️  Keep your secret key safe! Current key: ${ADMIN_SECRET}`);
+    console.log(`📊 Visitor tracking active - Total so far: ${totalUniqueVisitors}`);
   });
 }
 
-// Export for Vercel serverless
 module.exports = app;
