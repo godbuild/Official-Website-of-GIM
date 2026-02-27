@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🔐 Secret key for broadcast protection
-const ADMIN_SECRET = process.env.BROADCAST_SECRET || "Godbuild2026Secure!";
+const ADMIN_SECRET = process.env.BROADCAST_SECRET || "gim@admin!";
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
