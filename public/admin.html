@@ -574,7 +574,26 @@
     };
 
     // Total unique visitors (stored in localStorage for demo - in production, this comes from server)
-    let totalVisitors = parseInt(localStorage.getItem('totalUniqueVisitors') || '1247'); // Example starting value
+   // Fetch real stats from server
+async function fetchStats() {
+  try {
+    const response = await fetch('/api/stats/visitors');
+    const data = await response.json();
+    
+    // Update active visitors (from health check we already do separately)
+    // But we'll update total visitors here
+    document.getElementById('totalVisitors').textContent = formatNumber(data.totalUniqueVisitors || 0);
+    
+    // Optionally update active visitors too if you want to unify
+    // But we'll keep the separate health check for active visitors
+  } catch (err) {
+    console.log('Could not fetch visitor stats');
+  }
+}
+
+// Call it initially and every 10 seconds
+fetchStats();
+setInterval(fetchStats, 10000);
 
     // Format numbers with K, M, B
     function formatNumber(num) {
