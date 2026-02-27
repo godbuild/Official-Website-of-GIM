@@ -3,560 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Office</title>
+  <title>Broadcast Admin - Godbuild Site</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     /* ========== Your existing styles (keep them all) ========== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #071829, #03101b);
-      min-height: 100vh;
-      padding: 20px;
-      color: #e6eef6;
+      min-height: 100vh; padding: 20px; color: #e6eef6;
     }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      padding: 15px 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .header-title h1 {
-      font-size: 2rem;
-      background: linear-gradient(135deg, #ff4444, #ffaa00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .header-title p {
-      color: #9aa4b2;
-      font-size: 0.9rem;
-    }
-
-    .header-icons {
-      display: flex;
-      gap: 15px;
-    }
-
+    .container { max-width: 800px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 15px 20px; background: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+    .header-title h1 { font-size: 2rem; background: linear-gradient(135deg, #ff4444, #ffaa00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header-title p { color: #9aa4b2; font-size: 0.9rem; }
+    .header-icons { display: flex; gap: 15px; }
     .header-icon {
-      width: 45px;
-      height: 45px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 1.3rem;
-      color: #7dd3fc;
+      width: 45px; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: all 0.3s; font-size: 1.3rem; color: #7dd3fc;
     }
-
-    .header-icon:hover {
-      background: linear-gradient(135deg, #ff4444, #ffaa00);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
-      color: white;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 25px;
-    }
-
-    .stat-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      padding: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      border-color: #ffaa00;
-    }
-
-    .stat-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-      color: #9aa4b2;
-    }
-
-    .stat-header i {
-      font-size: 1.5rem;
-      color: #ffaa00;
-    }
-
-    .stat-value {
-      font-size: 2.8rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, #ff4444, #ffaa00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.2;
-    }
-
-    .stat-label {
-      color: #9aa4b2;
-      font-size: 0.9rem;
-      margin-top: 5px;
-    }
-
-    .stat-footer {
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: #4a5568;
-    }
-
-    .admin-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      padding: 25px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .admin-card h2 {
-      margin-bottom: 20px;
-      color: #7dd3fc;
-      font-size: 1.5rem;
-    }
-
-    .quick-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      margin-bottom: 25px;
-    }
-
-    .quick-btn {
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: #e6eef6;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .quick-btn:hover {
-      background: linear-gradient(135deg, #ff4444, #ffaa00);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #9aa4b2;
-      font-weight: 500;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: #e6eef6;
-      font-size: 1rem;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #ffaa00;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: flex-end;
-      margin-top: 20px;
-    }
-
-    .btn {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #ff4444, #ffaa00);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 68, 68, 0.4);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: #e6eef6;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .result-message {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      display: none;
-    }
-
-    .result-message.success {
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid #10b981;
-      color: #10b981;
-      display: block;
-    }
-
-    .result-message.error {
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid #ef4444;
-      color: #ef4444;
-      display: block;
-    }
-
-    .history-list {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-top: 15px;
-    }
-
-    .history-item {
-      padding: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.9rem;
-    }
-
-    .history-time {
-      color: #9aa4b2;
-      font-size: 0.8rem;
-      margin-right: 10px;
-    }
-
-    .history-title {
-      color: #ffaa00;
-      font-weight: 500;
-    }
-
-    .badge {
-      background: rgba(255, 170, 0, 0.2);
-      color: #ffaa00;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      margin-left: 8px;
-    }
+    .header-icon:hover { background: linear-gradient(135deg, #ff4444, #ffaa00); transform: translateY(-2px); color: white; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+    .stat-card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.3s; }
+    .stat-card:hover { transform: translateY(-5px); border-color: #ffaa00; }
+    .stat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #9aa4b2; }
+    .stat-header i { font-size: 1.5rem; color: #ffaa00; }
+    .stat-value { font-size: 2.8rem; font-weight: bold; background: linear-gradient(135deg, #ff4444, #ffaa00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { color: #9aa4b2; font-size: 0.9rem; margin-top: 5px; }
+    .stat-footer { margin-top: 10px; font-size: 0.8rem; color: #4a5568; }
+    .admin-card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+    .admin-card h2 { margin-bottom: 20px; color: #7dd3fc; font-size: 1.5rem; }
+    .quick-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 25px; }
+    .quick-btn { padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #e6eef6; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .quick-btn:hover { background: linear-gradient(135deg, #ff4444, #ffaa00); transform: translateY(-2px); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; color: #9aa4b2; font-weight: 500; }
+    .form-group input, .form-group textarea { width: 100%; padding: 12px 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #e6eef6; font-size: 1rem; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #ffaa00; }
+    .action-buttons { display: flex; gap: 15px; justify-content: flex-end; margin-top: 20px; }
+    .btn { padding: 12px 25px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #ff4444, #ffaa00); color: white; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,68,68,0.4); }
+    .btn-secondary { background: rgba(255,255,255,0.1); color: #e6eef6; border: 1px solid rgba(255,255,255,0.2); }
+    .result-message { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }
+    .result-message.success { background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #10b981; display: block; }
+    .result-message.error { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; display: block; }
+    .history-list { max-height: 200px; overflow-y: auto; margin-top: 15px; }
+    .history-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+    .history-time { color: #9aa4b2; font-size: 0.8rem; margin-right: 10px; }
+    .history-title { color: #ffaa00; font-weight: 500; }
+    .badge { background: rgba(255,170,0,0.2); color: #ffaa00; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 8px; }
 
     /* Login Modal */
-    .login-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
-      z-index: 10000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .login-modal.show {
-      display: flex;
-    }
-
-    .login-content {
-      background: #091722;
-      color: #e6eef6;
-      max-width: 400px;
-      width: 90%;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
-      animation: slideUp 0.3s ease;
-    }
-
-    .login-content h2 {
-      color: #7dd3fc;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-
-    .login-form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .login-form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #9aa4b2;
-    }
-
-    .login-form-group input {
-      width: 100%;
-      padding: 12px 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: #e6eef6;
-    }
-
-    .login-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
-    }
-
-    .greeting-message {
-      text-align: center;
-      color: #10b981;
-      margin: 1rem 0;
-      font-size: 1.1rem;
-      display: none;
-    }
-
-    .greeting-message.show {
-      display: block;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .main-content {
-      display: none;
-    }
-
-    .main-content.visible {
-      display: block;
-    }
+    .login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; justify-content: center; align-items: center; }
+    .login-modal.show { display: flex; }
+    .login-content { background: #091722; color: #e6eef6; max-width: 400px; width: 90%; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 24px rgba(2,6,23,0.6); animation: slideUp 0.3s; }
+    .login-content h2 { color: #7dd3fc; margin-bottom: 1.5rem; text-align: center; }
+    .login-form-group { margin-bottom: 1.5rem; }
+    .login-form-group label { display: block; margin-bottom: 0.5rem; color: #9aa4b2; }
+    .login-form-group input { width: 100%; padding: 12px 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #e6eef6; }
+    .login-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.5rem; }
+    .greeting-message { text-align: center; color: #10b981; margin: 1rem 0; font-size: 1.1rem; display: none; }
+    .greeting-message.show { display: block; }
+    @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .main-content { display: none; }
+    .main-content.visible { display: block; }
 
     /* Statistics Modal */
-    .stats-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 20000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .stats-modal.show {
-      display: flex;
-    }
-
-    .stats-modal-content {
-      background: #0f1a2a;
-      color: #e6eef6;
-      max-width: 700px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 2rem;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      animation: fadeIn 0.3s;
-    }
-
-    .stats-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .stats-modal-header h2 {
-      color: #ffaa00;
-      font-size: 1.8rem;
-    }
-
-    .close-stats-btn {
-      background: none;
-      border: none;
-      color: #9aa4b2;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-
-    .close-stats-btn:hover {
-      color: #ff4444;
-    }
-
-    .stats-grid-detailed {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-box {
-      background: rgba(255,255,255,0.05);
-      padding: 1.2rem;
-      border-radius: 16px;
-      text-align: center;
-    }
-
-    .stat-box h3 {
-      color: #9aa4b2;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .number {
-      font-size: 2.2rem;
-      font-weight: bold;
-      background: linear-gradient(135deg, #ff4444, #ffaa00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .chart-container {
-      width: 100%;
-      max-width: 400px;
-      margin: 2rem auto;
-    }
+    .stats-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 20000; justify-content: center; align-items: center; }
+    .stats-modal.show { display: flex; }
+    .stats-modal-content { background: #0f1a2a; color: #e6eef6; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .stats-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .stats-modal-header h2 { color: #ffaa00; font-size: 1.8rem; }
+    .close-stats-btn { background: none; border: none; color: #9aa4b2; font-size: 2rem; cursor: pointer; }
+    .close-stats-btn:hover { color: #ff4444; }
+    .stats-grid-detailed { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-box { background: rgba(255,255,255,0.05); padding: 1.2rem; border-radius: 16px; text-align: center; }
+    .stat-box h3 { color: #9aa4b2; font-size: 1rem; margin-bottom: 0.5rem; }
+    .stat-box .number { font-size: 2.2rem; font-weight: bold; background: linear-gradient(135deg, #ff4444, #ffaa00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .chart-container { width: 100%; max-width: 400px; margin: 2rem auto; }
 
     /* Stream Modal */
-    .stream-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 20000;
-      justify-content: center;
-      align-items: center;
-    }
+    .stream-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 20000; justify-content: center; align-items: center; }
+    .stream-modal.show { display: flex; }
+    .stream-modal-content { background: #0f1a2a; color: #e6eef6; max-width: 500px; width: 90%; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .stream-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .stream-modal-header h2 { color: #ffaa00; font-size: 1.8rem; }
+    .close-stream-btn { background: none; border: none; color: #9aa4b2; font-size: 2rem; cursor: pointer; }
+    .close-stream-btn:hover { color: #ff4444; }
+    .stream-options { display: flex; flex-direction: column; gap: 1rem; }
+    .stream-option { display: flex; align-items: center; gap: 1.5rem; padding: 1.2rem; background: rgba(255,255,255,0.05); border-radius: 16px; cursor: pointer; transition: all 0.2s; font-size: 1.2rem; }
+    .stream-option:hover { background: rgba(255,170,0,0.2); transform: translateX(5px); }
+    .stream-option i { font-size: 2rem; color: #ffaa00; width: 2.5rem; text-align: center; }
 
-    .stream-modal.show {
-      display: flex;
+    /* Upload Modal */
+    .upload-modal, .poll-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 21000; justify-content: center; align-items: center;
     }
-
-    .stream-modal-content {
-      background: #0f1a2a;
-      color: #e6eef6;
-      max-width: 500px;
-      width: 90%;
-      padding: 2rem;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      animation: fadeIn 0.3s;
+    .upload-modal.show, .poll-modal.show { display: flex; }
+    .upload-modal-content, .poll-modal-content {
+      background: #0f1a2a; color: #e6eef6; max-width: 500px; width: 90%; padding: 2rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-
-    .stream-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .stream-modal-header h2 {
-      color: #ffaa00;
-      font-size: 1.8rem;
-    }
-
-    .close-stream-btn {
-      background: none;
-      border: none;
-      color: #9aa4b2;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-
-    .close-stream-btn:hover {
-      color: #ff4444;
-    }
-
-    .stream-options {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .stream-option {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1.2rem;
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 1.2rem;
-    }
-
-    .stream-option:hover {
-      background: rgba(255,170,0,0.2);
-      transform: translateX(5px);
-    }
-
-    .stream-option i {
-      font-size: 2rem;
-      color: #ffaa00;
-      width: 2.5rem;
-      text-align: center;
-    }
+    .upload-modal-header, .poll-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .upload-modal-header h2, .poll-modal-header h2 { color: #ffaa00; }
+    .close-upload-btn, .close-poll-btn { background: none; border: none; color: #9aa4b2; font-size: 2rem; cursor: pointer; }
+    .close-upload-btn:hover, .close-poll-btn:hover { color: #ff4444; }
+    .progress-bar { width: 100%; height: 20px; background: #333; border-radius: 10px; margin: 1rem 0; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(135deg, #ff4444, #ffaa00); width: 0%; transition: width 0.3s; }
 
     @media (max-width: 600px) {
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-      .stats-grid-detailed {
-        grid-template-columns: 1fr;
-      }
+      .stats-grid { grid-template-columns: 1fr; }
+      .stats-grid-detailed { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -569,9 +128,7 @@
         <label><i class="fa-solid fa-key"></i> Password</label>
         <input type="password" id="adminPassword" placeholder="Enter admin password" onkeypress="handleKeyPress(event)">
       </div>
-      <div class="greeting-message" id="greetingMessage">
-        <i class="fa-solid fa-hand-wave"></i> Welcome, Admin!
-      </div>
+      <div class="greeting-message" id="greetingMessage"><i class="fa-solid fa-hand-wave"></i> Welcome, Admin!</div>
       <div class="login-buttons">
         <button class="btn btn-secondary" onclick="closeLoginModal()">Cancel</button>
         <button class="btn btn-primary" onclick="verifyPassword()"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</button>
@@ -589,12 +146,8 @@
           <p>Send instant notifications to everyone visiting your site</p>
         </div>
         <div class="header-icons">
-          <div class="header-icon" onclick="showStatsModal()" title="Statistics Dashboard">
-            <i class="fas fa-chart-pie"></i>
-          </div>
-          <div class="header-icon" onclick="showStreamModal()" title="Stream & Media">
-            <i class="fas fa-video"></i>
-          </div>
+          <div class="header-icon" onclick="showStatsModal()" title="Statistics Dashboard"><i class="fas fa-chart-pie"></i></div>
+          <div class="header-icon" onclick="showStreamModal()" title="Stream & Media"><i class="fas fa-video"></i></div>
         </div>
       </div>
 
@@ -604,7 +157,6 @@
           <div class="stat-header"><i class="fas fa-users"></i><span>Real-time</span></div>
           <div class="stat-value" id="activeVisitors">0</div>
           <div class="stat-label">Active Visitors Now</div>
-          <div class="stat-footer">Updated every 5 seconds</div>
         </div>
         <div class="stat-card">
           <div class="stat-header"><i class="fas fa-bullhorn"></i><span>Total</span></div>
@@ -616,7 +168,6 @@
           <div class="stat-header"><i class="fas fa-address-book"></i><span>All Time</span></div>
           <div class="stat-value" id="totalVisitors">0</div>
           <div class="stat-label">Unique Visitors</div>
-          <div class="stat-footer">Since site launch</div>
         </div>
       </div>
 
@@ -651,11 +202,10 @@
         <div class="form-group">
           <label><i class="fas fa-image"></i> Icon URL (optional)</label>
           <input type="url" id="icon" placeholder="/images/logo.png">
-          <small style="color: #9aa4b2; display: block; margin-top: 5px;">Leave empty for default icon</small>
         </div>
         <div class="action-buttons">
-          <button class="btn btn-secondary" onclick="testBroadcast()"><i class="fas fa-vial"></i> Test (Console)</button>
-          <button class="btn btn-primary" onclick="sendBroadcast()"><i class="fas fa-bullhorn"></i> Send Broadcast</button>
+          <button class="btn btn-secondary" onclick="testBroadcast()"><i class="fas fa-vial"></i> Test</button>
+          <button class="btn btn-primary" onclick="sendBroadcast()"><i class="fas fa-bullhorn"></i> Send</button>
         </div>
         <div id="result" class="result-message"></div>
       </div>
@@ -676,39 +226,16 @@
         <button class="close-stats-btn" onclick="closeStatsModal()">&times;</button>
       </div>
       <div class="stats-grid-detailed">
-        <div class="stat-box">
-          <h3>Today</h3>
-          <div class="number" id="statsToday">0</div>
-        </div>
-        <div class="stat-box">
-          <h3>This Week</h3>
-          <div class="number" id="statsWeek">0</div>
-        </div>
-        <div class="stat-box">
-          <h3>This Month</h3>
-          <div class="number" id="statsMonth">0</div>
-        </div>
-        <div class="stat-box">
-          <h3>Average Daily</h3>
-          <div class="number" id="statsAvg">0</div>
-        </div>
-        <div class="stat-box">
-          <h3>Total Clicks</h3>
-          <div class="number" id="statsClicks">0</div>
-        </div>
-        <div class="stat-box">
-          <h3>Total Views</h3>
-          <div class="number" id="statsViews">0</div>
-        </div>
-        <div class="stat-box">
-          <h3>Views/Visitor</h3>
-          <div class="number" id="statsPerVisitor">0</div>
-        </div>
+        <div class="stat-box"><h3>Today</h3><div class="number" id="statsToday">0</div></div>
+        <div class="stat-box"><h3>This Week</h3><div class="number" id="statsWeek">0</div></div>
+        <div class="stat-box"><h3>This Month</h3><div class="number" id="statsMonth">0</div></div>
+        <div class="stat-box"><h3>Average Daily</h3><div class="number" id="statsAvg">0</div></div>
+        <div class="stat-box"><h3>Clicks</h3><div class="number" id="statsClicks">0</div></div>
+        <div class="stat-box"><h3>Views</h3><div class="number" id="statsViews">0</div></div>
+        <div class="stat-box"><h3>Views/Visitor</h3><div class="number" id="statsPerVisitor">0</div></div>
       </div>
-      <div class="chart-container">
-        <canvas id="visitorPieChart"></canvas>
-      </div>
-      <p style="text-align: center; color: #9aa4b2; font-size: 0.9rem;">Real-time data based on unique visitors</p>
+      <div class="chart-container"><canvas id="visitorPieChart"></canvas></div>
+      <p style="text-align:center; color:#9aa4b2;">Real-time data</p>
     </div>
   </div>
 
@@ -720,132 +247,132 @@
         <button class="close-stream-btn" onclick="closeStreamModal()">&times;</button>
       </div>
       <div class="stream-options">
-        <div class="stream-option" onclick="startStream()">
-          <i class="fas fa-circle"></i>
-          <span>Stream</span>
+        <div class="stream-option" onclick="alert('Stream feature coming soon!'); closeStreamModal();">
+          <i class="fas fa-circle"></i> <span>Stream</span>
         </div>
-        <div class="stream-option" onclick="uploadVideo()">
-          <i class="fas fa-upload"></i>
-          <span>Upload Videos</span>
+        <div class="stream-option" onclick="showUploadModal()">
+          <i class="fas fa-upload"></i> <span>Upload Videos</span>
         </div>
-        <div class="stream-option" onclick="startLivePoll()">
-          <i class="fa-solid fa-square-poll-vertical"></i>
-          <span>Live Poll</span>
+        <div class="stream-option" onclick="showPollModal()">
+          <i class="fa-solid fa-square-poll-vertical"></i> <span>Live Poll</span>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Upload Modal -->
+  <div class="upload-modal" id="uploadModal">
+    <div class="upload-modal-content">
+      <div class="upload-modal-header">
+        <h2><i class="fas fa-upload"></i> Upload Video</h2>
+        <button class="close-upload-btn" onclick="closeUploadModal()">&times;</button>
+      </div>
+      <div class="upload-body">
+        <div class="form-group">
+          <label>Select video file (MP4, WebM, etc.)</label>
+          <input type="file" id="videoFile" accept="video/*">
+        </div>
+        <div class="progress-bar" id="uploadProgress" style="display:none;"><div class="progress-fill"></div></div>
+        <div id="uploadResult"></div>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="uploadVideo()">Upload</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Poll Modal -->
+  <div class="poll-modal" id="pollModal">
+    <div class="poll-modal-content">
+      <div class="poll-modal-header">
+        <h2><i class="fa-solid fa-square-poll-vertical"></i> Create Live Poll</h2>
+        <button class="close-poll-btn" onclick="closePollModal()">&times;</button>
+      </div>
+      <div class="poll-body">
+        <div class="form-group">
+          <label>Question</label>
+          <input type="text" id="pollQuestion" placeholder="Enter your question">
+        </div>
+        <div class="form-group">
+          <label>Options (one per line)</label>
+          <textarea id="pollOptions" placeholder="Option 1&#10;Option 2&#10;Option 3" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Choice Type</label>
+          <select id="pollType"><option value="single">Single choice</option><option value="multiple">Multiple choice</option></select>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="closePollModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="createPoll()">Post Poll</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ---------- Admin credentials ----------
+    // Admin credentials
     const ADMIN_PASSWORD = "gim@admin!";
     const BROADCAST_SECRET = "gim@admin!";
 
-    // ---------- Broadcast stats ----------
+    // Broadcast stats
     let broadcastHistory = JSON.parse(localStorage.getItem('broadcastHistory') || '[]');
-    let stats = {
-      total: parseInt(localStorage.getItem('totalBroadcasts') || '0'),
-      last: localStorage.getItem('lastBroadcast') || null
-    };
+    let stats = { total: parseInt(localStorage.getItem('totalBroadcasts') || '0'), last: localStorage.getItem('lastBroadcast') || null };
 
-    // Format numbers with K, M, B
     function formatNumber(num) {
-      if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
-      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+      if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+      if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
       return num.toString();
     }
-
-    // Update main stats
     function updateStats() {
       document.getElementById('totalBroadcasts').textContent = formatNumber(stats.total);
-      const lastTime = stats.last ? new Date(stats.last).toLocaleTimeString() : '-';
-      document.getElementById('lastBroadcastTime').textContent = `Last: ${lastTime}`;
+      document.getElementById('lastBroadcastTime').textContent = `Last: ${stats.last ? new Date(stats.last).toLocaleTimeString() : '-'}`;
     }
 
-    // ---------- Fetch real data from server ----------
+    // Fetch data
     async function fetchBasicStats() {
-      try {
-        const res = await fetch('/health');
-        const data = await res.json();
-        document.getElementById('activeVisitors').textContent = data.clients || 0;
-        document.getElementById('totalVisitors').textContent = formatNumber(data.totalUniqueVisitors || 0);
-      } catch (err) {
-        console.log('Health check failed');
-      }
+      try { const res = await fetch('/health'); const d = await res.json(); document.getElementById('activeVisitors').textContent = d.clients || 0; document.getElementById('totalVisitors').textContent = formatNumber(d.totalUniqueVisitors || 0); } catch (e) {}
     }
-
     async function fetchDetailedStats() {
-      try {
-        const res = await fetch('/api/stats/detailed');
-        const data = await res.json();
-        document.getElementById('statsToday').textContent = data.today;
-        document.getElementById('statsWeek').textContent = data.week;
-        document.getElementById('statsMonth').textContent = data.month;
-        document.getElementById('statsAvg').textContent = data.average;
-        document.getElementById('statsClicks').textContent = data.clicks;
-        document.getElementById('statsViews').textContent = data.views;
-        document.getElementById('statsPerVisitor').textContent = data.perVisitor;
-        updatePieChart(data.today, data.week, data.month);
-      } catch (err) {
-        console.log('Detailed stats fetch failed', err);
-      }
+      try { const res = await fetch('/api/stats/detailed'); const d = await res.json(); 
+        document.getElementById('statsToday').textContent = d.today;
+        document.getElementById('statsWeek').textContent = d.week;
+        document.getElementById('statsMonth').textContent = d.month;
+        document.getElementById('statsAvg').textContent = d.average;
+        document.getElementById('statsClicks').textContent = d.clicks;
+        document.getElementById('statsViews').textContent = d.views;
+        document.getElementById('statsPerVisitor').textContent = d.perVisitor;
+        updatePieChart(d.today, d.week, d.month);
+      } catch(e) {}
     }
+    setInterval(fetchBasicStats, 5000); fetchBasicStats();
+    setInterval(fetchDetailedStats, 30000); fetchDetailedStats();
 
-    // Pie chart
-    let pieChart = null;
-    function updatePieChart(today, week, month) {
+    let pieChart;
+    function updatePieChart(t,w,m) {
       const ctx = document.getElementById('visitorPieChart').getContext('2d');
       if (pieChart) pieChart.destroy();
       pieChart = new Chart(ctx, {
         type: 'pie',
-        data: {
-          labels: ['Today', 'This Week', 'This Month'],
-          datasets: [{
-            data: [today, week, month],
-            backgroundColor: ['#ff4444', '#ffaa00', '#7dd3fc'],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { labels: { color: '#e6eef6' } }
-          }
-        }
+        data: { labels: ['Today','This Week','This Month'], datasets: [{ data: [t,w,m], backgroundColor: ['#ff4444','#ffaa00','#7dd3fc'] }] },
+        options: { plugins: { legend: { labels: { color: '#e6eef6' } } } }
       });
     }
 
-    // Periodic updates
-    setInterval(fetchBasicStats, 5000);
-    setInterval(fetchDetailedStats, 30000);
-    fetchBasicStats();
-    fetchDetailedStats();
-
-    // ---------- Login ----------
+    // Login
     function showLoginModal() { document.getElementById('loginModal').classList.add('show'); }
     function closeLoginModal() { document.getElementById('loginModal').classList.remove('show'); }
     function handleKeyPress(e) { if (e.key === 'Enter') verifyPassword(); }
-
     function verifyPassword() {
-      const pwd = document.getElementById('adminPassword').value;
-      if (pwd === ADMIN_PASSWORD) {
+      if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
         document.getElementById('greetingMessage').classList.add('show');
-        setTimeout(() => {
-          closeLoginModal();
-          document.getElementById('mainContent').classList.add('visible');
-        }, 1500);
-      } else {
-        alert('Incorrect password!');
-      }
+        setTimeout(() => { closeLoginModal(); document.getElementById('mainContent').classList.add('visible'); }, 1500);
+      } else alert('Incorrect password!');
     }
+    window.onload = function() { showLoginModal(); updateStats(); updateHistory(); };
 
-    window.onload = function() {
-      showLoginModal();
-      updateStats();
-      updateHistory();
-    };
-
-    // ---------- Templates ----------
+    // Templates
     const templates = {
       welcome: { title: '👋 Welcome!', body: 'Thanks for visiting my site!', icon: '/images/logo.png' },
       update: { title: '✨ New Update', body: 'I\'ve added new content.', icon: '/images/logo.png' },
@@ -853,115 +380,92 @@
       event: { title: '🎉 Special Event', body: 'Something exciting is happening!', icon: '/images/logo.png' },
       maintenance: { title: '🔧 Quick Maintenance', body: 'Site might be briefly unavailable.', icon: '/images/logo.png' }
     };
-
-    function setTemplate(type) {
-      const t = templates[type];
-      if (t) {
-        document.getElementById('title').value = t.title || '';
-        document.getElementById('body').value = t.body || '';
-        document.getElementById('url').value = t.url || '';
-        document.getElementById('icon').value = t.icon || '';
-      }
-    }
-
-    function clearForm() {
-      document.getElementById('title').value = '';
-      document.getElementById('body').value = '';
-      document.getElementById('url').value = '';
-      document.getElementById('icon').value = '';
-    }
-
-    function showResult(msg, success = true) {
-      const res = document.getElementById('result');
-      res.textContent = msg;
-      res.className = `result-message ${success ? 'success' : 'error'}`;
-      setTimeout(() => { res.style.display = 'none'; }, 5000);
-    }
-
+    function setTemplate(t) { const tm = templates[t]; if (tm) { for (let id of ['title','body','url','icon']) document.getElementById(id).value = tm[id] || ''; } }
+    function clearForm() { for (let id of ['title','body','url','icon']) document.getElementById(id).value = ''; }
+    function showResult(msg, ok) { const r = document.getElementById('result'); r.textContent = msg; r.className = `result-message ${ok ? 'success' : 'error'}`; setTimeout(() => r.style.display = 'none', 5000); }
     function testBroadcast() {
-      const title = document.getElementById('title').value;
-      const body = document.getElementById('body').value;
-      if (!title || !body) return showResult('❌ Fill in title and message', false);
-      console.log('📢 TEST BROADCAST:', { title, body });
-      showResult('✅ Check console (F12)');
+      const t = document.getElementById('title').value, b = document.getElementById('body').value;
+      if (!t || !b) return showResult('❌ Fill in title and message', false);
+      console.log('📢 TEST:', { t, b }); showResult('✅ Check console', true);
     }
-
     async function sendBroadcast() {
-      const title = document.getElementById('title').value;
-      const body = document.getElementById('body').value;
-      if (!title || !body) return showResult('❌ Fill in title and message', false);
-
-      const payload = {
-        title, body,
-        url: document.getElementById('url').value || null,
-        icon: document.getElementById('icon').value || null,
-        secret: BROADCAST_SECRET
-      };
-
+      const t = document.getElementById('title').value, b = document.getElementById('body').value;
+      if (!t || !b) return showResult('❌ Fill in title and message', false);
+      const payload = { title: t, body: b, url: document.getElementById('url').value || null, icon: document.getElementById('icon').value || null, secret: BROADCAST_SECRET };
       try {
-        const res = await fetch('/broadcast', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
+        const res = await fetch('/broadcast', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+        const d = await res.json();
         if (res.ok) {
-          stats.total++;
-          stats.last = new Date().toISOString();
+          stats.total++; stats.last = new Date().toISOString();
           localStorage.setItem('totalBroadcasts', stats.total);
           localStorage.setItem('lastBroadcast', stats.last);
-          broadcastHistory.unshift({ title, time: new Date().toLocaleTimeString(), recipients: data.sentTo });
-          broadcastHistory = broadcastHistory.slice(0, 10);
+          broadcastHistory.unshift({ title: t, time: new Date().toLocaleTimeString(), recipients: d.sentTo });
+          broadcastHistory = broadcastHistory.slice(0,10);
           localStorage.setItem('broadcastHistory', JSON.stringify(broadcastHistory));
-          updateStats();
-          updateHistory();
-          showResult(`✅ Sent to ${data.sentTo} active visitor(s)!`);
-          clearForm();
-        } else {
-          showResult(`❌ Error: ${data.error}`, false);
-        }
-      } catch (err) {
-        showResult('❌ Failed to connect', false);
-      }
+          updateStats(); updateHistory(); showResult(`✅ Sent to ${d.sentTo}`, true); clearForm();
+        } else showResult(`❌ Error: ${d.error}`, false);
+      } catch(e) { showResult('❌ Failed', false); }
     }
-
     function updateHistory() {
       const el = document.getElementById('history');
-      if (broadcastHistory.length === 0) {
-        el.innerHTML = '<div style="text-align:center; color:#9aa4b2; padding:20px;"><i class="fas fa-exchange-alt"></i> Send your first broadcast</div>';
-        return;
-      }
-      el.innerHTML = broadcastHistory.map(item => `
-        <div class="history-item">
-          <span class="history-time">${item.time}</span>
-          <span class="history-title">${item.title}</span>
-          <span class="badge">${item.recipients || 0} delivered</span>
-        </div>
-      `).join('');
+      if (!broadcastHistory.length) { el.innerHTML = '<div style="text-align:center; color:#9aa4b2; padding:20px;"><i class="fas fa-exchange-alt"></i> No broadcasts yet</div>'; return; }
+      el.innerHTML = broadcastHistory.map(i => `<div class="history-item"><span class="history-time">${i.time}</span><span class="history-title">${i.title}</span><span class="badge">${i.recipients||0}</span></div>`).join('');
     }
 
-    // ---------- Modal controls ----------
-    function showStatsModal() {
-      document.getElementById('statsModal').classList.add('show');
-      fetchDetailedStats(); // refresh when opened
-    }
+    // Modal controls
+    function showStatsModal() { document.getElementById('statsModal').classList.add('show'); fetchDetailedStats(); }
     function closeStatsModal() { document.getElementById('statsModal').classList.remove('show'); }
-
     function showStreamModal() { document.getElementById('streamModal').classList.add('show'); }
     function closeStreamModal() { document.getElementById('streamModal').classList.remove('show'); }
+    function showUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
+    function closeUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
+    function showPollModal() { document.getElementById('pollModal').classList.add('show'); }
+    function closePollModal() { document.getElementById('pollModal').classList.remove('show'); }
 
-    // Placeholder actions
-    function startStream() { alert('🎥 Stream feature coming soon!'); closeStreamModal(); }
-    function uploadVideo() { alert('📤 Upload Videos feature coming soon!'); closeStreamModal(); }
-    function startLivePoll() { alert('📊 Live Poll feature coming soon!'); closeStreamModal(); }
+    // Upload video
+    async function uploadVideo() {
+      const file = document.getElementById('videoFile').files[0];
+      if (!file) { alert('Select a file'); return; }
+      const formData = new FormData(); formData.append('video', file);
+      const prog = document.getElementById('uploadProgress'); prog.style.display = 'block';
+      const fill = document.querySelector('.progress-fill'); fill.style.width = '0%';
+      try {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/upload/video', true);
+        xhr.upload.onprogress = (e) => { if (e.lengthComputable) fill.style.width = (e.loaded/e.total*100)+'%'; };
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            document.getElementById('uploadResult').innerHTML = `<p style="color:#10b981;">✅ Uploaded! <a href="${data.url}" target="_blank">View</a></p>`;
+            fill.style.width = '100%';
+          } else {
+            const err = JSON.parse(xhr.responseText);
+            document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ ${err.error}</p>`;
+          }
+        };
+        xhr.onerror = () => document.getElementById('uploadResult').innerHTML = '<p style="color:#ff4444;">❌ Upload failed</p>';
+        xhr.send(formData);
+      } catch(e) { document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ ${e.message}</p>`; }
+    }
 
-    // Ctrl+Enter shortcut
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.key === 'Enter') {
-        e.preventDefault();
-        sendBroadcast();
-      }
-    });
+    // Create poll
+    async function createPoll() {
+      const q = document.getElementById('pollQuestion').value.trim();
+      const opts = document.getElementById('pollOptions').value.split('\n').map(s=>s.trim()).filter(s=>s);
+      const type = document.getElementById('pollType').value;
+      if (!q || opts.length<2) { alert('Enter question and at least two options'); return; }
+      try {
+        const res = await fetch('/api/poll/create', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({ secret: BROADCAST_SECRET, question: q, options: opts, type })
+        });
+        const d = await res.json();
+        if (res.ok) { alert('Poll created!'); closePollModal(); } else alert('Error: '+d.error);
+      } catch(e) { alert('Failed to create poll'); }
+    }
+
+    // Ctrl+Enter
+    document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendBroadcast(); } });
   </script>
 </body>
 </html>
