@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Broadcast Admin - Godbuild Site</title>
+  <title>Admin Office</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Chart.js for pie chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    /* (Keep all your existing styles, then add the new ones below) */
+    /* ========== Your existing styles (keep them all) ========== */
     * {
       margin: 0;
       padding: 0;
@@ -28,7 +27,6 @@
       margin: 0 auto;
     }
 
-    /* Header with icons */
     .header {
       display: flex;
       justify-content: space-between;
@@ -79,7 +77,6 @@
       color: white;
     }
 
-    /* Stats Cards */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -134,7 +131,6 @@
       color: #4a5568;
     }
 
-    /* Admin Card */
     .admin-card {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 15px;
@@ -293,7 +289,7 @@
       margin-left: 8px;
     }
 
-    /* Login Modal (unchanged) */
+    /* Login Modal */
     .login-modal {
       display: none;
       position: fixed;
@@ -320,12 +316,10 @@
       padding: 2rem;
       border-radius: 16px;
       box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
-      position: relative;
       animation: slideUp 0.3s ease;
     }
 
     .login-content h2 {
-      margin-top: 0;
       color: #7dd3fc;
       margin-bottom: 1.5rem;
       text-align: center;
@@ -339,7 +333,6 @@
       display: block;
       margin-bottom: 0.5rem;
       color: #9aa4b2;
-      font-weight: 500;
     }
 
     .login-form-group input {
@@ -349,12 +342,6 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       color: #e6eef6;
-      font-size: 1rem;
-    }
-
-    .login-form-group input:focus {
-      outline: none;
-      border-color: #ffaa00;
     }
 
     .login-buttons {
@@ -381,7 +368,6 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Main content (hidden until login) */
     .main-content {
       display: none;
     }
@@ -390,7 +376,7 @@
       display: block;
     }
 
-    /* ========== NEW MODAL FOR STATISTICS ========== */
+    /* Statistics Modal */
     .stats-modal {
       display: none;
       position: fixed;
@@ -419,7 +405,6 @@
       padding: 2rem;
       border-radius: 24px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      position: relative;
       animation: fadeIn 0.3s;
     }
 
@@ -441,7 +426,6 @@
       color: #9aa4b2;
       font-size: 2rem;
       cursor: pointer;
-      transition: color 0.2s;
     }
 
     .close-stats-btn:hover {
@@ -482,75 +466,88 @@
       margin: 2rem auto;
     }
 
-    /* ========== BOTTOM STREAM POPUP ========== */
-    .stream-popup {
+    /* Stream Modal */
+    .stream-modal {
+      display: none;
       position: fixed;
-      bottom: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 350px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 20000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stream-modal.show {
+      display: flex;
+    }
+
+    .stream-modal-content {
       background: #0f1a2a;
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 -5px 30px rgba(0,0,0,0.5);
-      z-index: 15000;
-      transition: bottom 0.3s ease;
-      padding: 1.5rem;
-      border: 1px solid rgba(255,255,255,0.1);
+      color: #e6eef6;
+      max-width: 500px;
+      width: 90%;
+      padding: 2rem;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s;
     }
 
-    .stream-popup.show {
-      bottom: 0;
-    }
-
-    .stream-popup-header {
+    .stream-modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
-      color: #ffaa00;
+      margin-bottom: 2rem;
     }
 
-    .stream-popup-header h3 {
-      font-size: 1.2rem;
+    .stream-modal-header h2 {
+      color: #ffaa00;
+      font-size: 1.8rem;
     }
 
     .close-stream-btn {
       background: none;
       border: none;
       color: #9aa4b2;
-      font-size: 1.5rem;
+      font-size: 2rem;
       cursor: pointer;
+    }
+
+    .close-stream-btn:hover {
+      color: #ff4444;
     }
 
     .stream-options {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 1rem;
     }
 
     .stream-option {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 1rem;
+      gap: 1.5rem;
+      padding: 1.2rem;
       background: rgba(255,255,255,0.05);
-      border-radius: 12px;
+      border-radius: 16px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
+      font-size: 1.2rem;
     }
 
     .stream-option:hover {
       background: rgba(255,170,0,0.2);
+      transform: translateX(5px);
     }
 
     .stream-option i {
-      font-size: 1.5rem;
+      font-size: 2rem;
       color: #ffaa00;
-    }
-
-    .stream-option span {
-      font-size: 1.1rem;
+      width: 2.5rem;
+      text-align: center;
     }
 
     @media (max-width: 600px) {
@@ -561,95 +558,10 @@
         grid-template-columns: 1fr;
       }
     }
-
-    /* Stream Modal (larger, like stats modal) */
-.stream-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  z-index: 20000;
-  justify-content: center;
-  align-items: center;
-}
-
-.stream-modal.show {
-  display: flex;
-}
-
-.stream-modal-content {
-  background: #0f1a2a;
-  color: #e6eef6;
-  max-width: 500px;
-  width: 90%;
-  padding: 2rem;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  animation: fadeIn 0.3s;
-}
-
-.stream-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.stream-modal-header h2 {
-  color: #ffaa00;
-  font-size: 1.8rem;
-}
-
-.close-stream-btn {
-  background: none;
-  border: none;
-  color: #9aa4b2;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.close-stream-btn:hover {
-  color: #ff4444;
-}
-
-.stream-options {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.stream-option {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.2rem;
-  background: rgba(255,255,255,0.05);
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 1.2rem;
-}
-
-.stream-option:hover {
-  background: rgba(255,170,0,0.2);
-  transform: translateX(5px);
-}
-
-.stream-option i {
-  font-size: 2rem;
-  color: #ffaa00;
-  width: 2.5rem;
-  text-align: center;
-}
   </style>
 </head>
 <body>
-  <!-- Login Modal (same as before) -->
+  <!-- Login Modal -->
   <div class="login-modal" id="loginModal">
     <div class="login-content">
       <h2><i class="fa-solid fa-lock"></i> Admin Login</h2>
@@ -667,26 +579,26 @@
     </div>
   </div>
 
-  <!-- Main Admin Content -->
+  <!-- Main Content -->
   <div class="main-content" id="mainContent">
     <div class="container">
-      <!-- Header with Icons -->
+      <!-- Header -->
       <div class="header">
         <div class="header-title">
           <h1><i class="fas fa-bullhorn"></i> Broadcast Admin</h1>
           <p>Send instant notifications to everyone visiting your site</p>
         </div>
         <div class="header-icons">
-          <div class="header-icon" id="statsIcon" onclick="showStatsModal()" title="Statistics Dashboard">
+          <div class="header-icon" onclick="showStatsModal()" title="Statistics Dashboard">
             <i class="fas fa-chart-pie"></i>
           </div>
-        <div class="header-icon" id="streamIcon" onclick="showStreamModal()" title="Stream & Media">
+          <div class="header-icon" onclick="showStreamModal()" title="Stream & Media">
             <i class="fas fa-video"></i>
           </div>
         </div>
       </div>
 
-      <!-- Stats Cards (existing) -->
+      <!-- Stats Cards -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-header"><i class="fas fa-users"></i><span>Real-time</span></div>
@@ -708,7 +620,7 @@
         </div>
       </div>
 
-      <!-- Quick Templates (existing) -->
+      <!-- Quick Templates -->
       <div class="admin-card">
         <h2><i class="fas fa-bolt"></i> Quick Templates</h2>
         <div class="quick-buttons">
@@ -721,7 +633,7 @@
         </div>
       </div>
 
-      <!-- Broadcast Form (existing) -->
+      <!-- Broadcast Form -->
       <div class="admin-card">
         <h2><i class="fas fa-paper-plane"></i> Compose Broadcast</h2>
         <div class="form-group">
@@ -748,7 +660,7 @@
         <div id="result" class="result-message"></div>
       </div>
 
-      <!-- Broadcast History (existing) -->
+      <!-- Broadcast History -->
       <div class="admin-card">
         <h2><i class="fas fa-history"></i> Recent Broadcasts</h2>
         <div id="history" class="history-list"></div>
@@ -756,19 +668,21 @@
     </div>
   </div>
 
-  <!-- ========== STATISTICS MODAL (NEW) ========== -->
+  <!-- Statistics Modal -->
   <div class="stats-modal" id="statsModal">
     <div class="stats-modal-content">
       <div class="stats-modal-header">
         <h2><i class="fas fa-chart-pie"></i> Visitor Statistics</h2>
         <button class="close-stats-btn" onclick="closeStatsModal()">&times;</button>
       </div>
-
-      <!-- Detailed stats boxes -->
       <div class="stats-grid-detailed">
         <div class="stat-box">
           <h3>Today</h3>
           <div class="number" id="statsToday">0</div>
+        </div>
+        <div class="stat-box">
+          <h3>This Week</h3>
+          <div class="number" id="statsWeek">0</div>
         </div>
         <div class="stat-box">
           <h3>This Month</h3>
@@ -791,44 +705,43 @@
           <div class="number" id="statsPerVisitor">0</div>
         </div>
       </div>
-
-      <!-- Pie chart container -->
       <div class="chart-container">
         <canvas id="visitorPieChart"></canvas>
       </div>
-      <p style="text-align: center; color: #9aa4b2; font-size: 0.9rem;">* Data updates in real-time (mock data for now)</p>
+      <p style="text-align: center; color: #9aa4b2; font-size: 0.9rem;">Real-time data based on unique visitors</p>
     </div>
   </div>
 
-<!-- Stream Modal -->
-<div class="stream-modal" id="streamModal">
-  <div class="stream-modal-content">
-    <div class="stream-modal-header">
-      <h2><i class="fas fa-video"></i> Stream & Media</h2>
-      <button class="close-stream-btn" onclick="closeStreamModal()">&times;</button>
-    </div>
-    <div class="stream-options">
-      <div class="stream-option" onclick="startStream()">
-        <i class="fas fa-circle"></i>
-        <span>Stream</span>
+  <!-- Stream Modal -->
+  <div class="stream-modal" id="streamModal">
+    <div class="stream-modal-content">
+      <div class="stream-modal-header">
+        <h2><i class="fas fa-video"></i> Stream & Media</h2>
+        <button class="close-stream-btn" onclick="closeStreamModal()">&times;</button>
       </div>
-      <div class="stream-option" onclick="uploadVideo()">
-        <i class="fas fa-upload"></i>
-        <span>Upload Videos</span>
-      </div>
-      <div class="stream-option" onclick="startLivePoll()">
-        <i class="fa-solid fa-square-poll-vertical"></i>
-        <span>Live Poll</span>
+      <div class="stream-options">
+        <div class="stream-option" onclick="startStream()">
+          <i class="fas fa-circle"></i>
+          <span>Stream</span>
+        </div>
+        <div class="stream-option" onclick="uploadVideo()">
+          <i class="fas fa-upload"></i>
+          <span>Upload Videos</span>
+        </div>
+        <div class="stream-option" onclick="startLivePoll()">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+          <span>Live Poll</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <script>
-    // ---------- Admin password (UPDATED to gim@admin!) ----------
+    // ---------- Admin credentials ----------
     const ADMIN_PASSWORD = "gim@admin!";
+    const BROADCAST_SECRET = "gim@admin!";
 
-    // Store broadcast history and stats
+    // ---------- Broadcast stats ----------
     let broadcastHistory = JSON.parse(localStorage.getItem('broadcastHistory') || '[]');
     let stats = {
       total: parseInt(localStorage.getItem('totalBroadcasts') || '0'),
@@ -843,41 +756,45 @@
       return num.toString();
     }
 
-    // Update main stats display
+    // Update main stats
     function updateStats() {
       document.getElementById('totalBroadcasts').textContent = formatNumber(stats.total);
       const lastTime = stats.last ? new Date(stats.last).toLocaleTimeString() : '-';
       document.getElementById('lastBroadcastTime').textContent = `Last: ${lastTime}`;
     }
 
-    // Fetch real stats from server
-    async function fetchStats() {
+    // ---------- Fetch real data from server ----------
+    async function fetchBasicStats() {
       try {
-        const response = await fetch('/api/stats/visitors');
-        const data = await response.json();
+        const res = await fetch('/health');
+        const data = await res.json();
+        document.getElementById('activeVisitors').textContent = data.clients || 0;
         document.getElementById('totalVisitors').textContent = formatNumber(data.totalUniqueVisitors || 0);
-        document.getElementById('activeVisitors').textContent = data.activeVisitors || 0;
-
-        // Also update the detailed modal stats (using mock for now)
-        // In future, you can extend the API to return per-day, per-month data
-        document.getElementById('statsToday').textContent = Math.floor(Math.random() * 50) + 10; // mock
-        document.getElementById('statsMonth').textContent = Math.floor(Math.random() * 500) + 100; // mock
-        document.getElementById('statsAvg').textContent = Math.floor(Math.random() * 30) + 5; // mock
-        document.getElementById('statsClicks').textContent = Math.floor(Math.random() * 200) + 50; // mock
-        document.getElementById('statsViews').textContent = Math.floor(Math.random() * 1000) + 200; // mock
-        const perVisitor = (Math.random() * 5 + 1).toFixed(1);
-        document.getElementById('statsPerVisitor').textContent = perVisitor;
-
-        // Update pie chart with mock data
-        updatePieChart();
       } catch (err) {
-        console.log('Could not fetch visitor stats', err);
+        console.log('Health check failed');
       }
     }
 
-    // Pie chart instance
+    async function fetchDetailedStats() {
+      try {
+        const res = await fetch('/api/stats/detailed');
+        const data = await res.json();
+        document.getElementById('statsToday').textContent = data.today;
+        document.getElementById('statsWeek').textContent = data.week;
+        document.getElementById('statsMonth').textContent = data.month;
+        document.getElementById('statsAvg').textContent = data.average;
+        document.getElementById('statsClicks').textContent = data.clicks;
+        document.getElementById('statsViews').textContent = data.views;
+        document.getElementById('statsPerVisitor').textContent = data.perVisitor;
+        updatePieChart(data.today, data.week, data.month);
+      } catch (err) {
+        console.log('Detailed stats fetch failed', err);
+      }
+    }
+
+    // Pie chart
     let pieChart = null;
-    function updatePieChart() {
+    function updatePieChart(today, week, month) {
       const ctx = document.getElementById('visitorPieChart').getContext('2d');
       if (pieChart) pieChart.destroy();
       pieChart = new Chart(ctx, {
@@ -885,11 +802,7 @@
         data: {
           labels: ['Today', 'This Week', 'This Month'],
           datasets: [{
-            data: [
-              parseInt(document.getElementById('statsToday').textContent),
-              parseInt(document.getElementById('statsToday').textContent) * 7,
-              parseInt(document.getElementById('statsMonth').textContent)
-            ],
+            data: [today, week, month],
             backgroundColor: ['#ff4444', '#ffaa00', '#7dd3fc'],
             borderWidth: 0
           }]
@@ -902,34 +815,20 @@
       });
     }
 
-    // Call fetchStats initially and every 10 seconds
-    fetchStats();
-    setInterval(fetchStats, 10000);
+    // Periodic updates
+    setInterval(fetchBasicStats, 5000);
+    setInterval(fetchDetailedStats, 30000);
+    fetchBasicStats();
+    fetchDetailedStats();
 
-    // Check server health for active visitors (existing)
-    async function checkServerHealth() {
-      try {
-        const response = await fetch('/health');
-        const data = await response.json();
-        document.getElementById('activeVisitors').textContent = data.clients || 0;
-      } catch (err) {}
-    }
-    setInterval(checkServerHealth, 5000);
-    checkServerHealth();
+    // ---------- Login ----------
+    function showLoginModal() { document.getElementById('loginModal').classList.add('show'); }
+    function closeLoginModal() { document.getElementById('loginModal').classList.remove('show'); }
+    function handleKeyPress(e) { if (e.key === 'Enter') verifyPassword(); }
 
-    // ---------- Login functions ----------
-    function showLoginModal() {
-      document.getElementById('loginModal').classList.add('show');
-    }
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('show');
-    }
-    function handleKeyPress(e) {
-      if (e.key === 'Enter') verifyPassword();
-    }
     function verifyPassword() {
-      const password = document.getElementById('adminPassword').value;
-      if (password === ADMIN_PASSWORD) {
+      const pwd = document.getElementById('adminPassword').value;
+      if (pwd === ADMIN_PASSWORD) {
         document.getElementById('greetingMessage').classList.add('show');
         setTimeout(() => {
           closeLoginModal();
@@ -939,13 +838,14 @@
         alert('Incorrect password!');
       }
     }
+
     window.onload = function() {
       showLoginModal();
       updateStats();
       updateHistory();
     };
 
-    // ---------- Template functions (unchanged) ----------
+    // ---------- Templates ----------
     const templates = {
       welcome: { title: '👋 Welcome!', body: 'Thanks for visiting my site!', icon: '/images/logo.png' },
       update: { title: '✨ New Update', body: 'I\'ve added new content.', icon: '/images/logo.png' },
@@ -953,6 +853,7 @@
       event: { title: '🎉 Special Event', body: 'Something exciting is happening!', icon: '/images/logo.png' },
       maintenance: { title: '🔧 Quick Maintenance', body: 'Site might be briefly unavailable.', icon: '/images/logo.png' }
     };
+
     function setTemplate(type) {
       const t = templates[type];
       if (t) {
@@ -962,18 +863,21 @@
         document.getElementById('icon').value = t.icon || '';
       }
     }
+
     function clearForm() {
       document.getElementById('title').value = '';
       document.getElementById('body').value = '';
       document.getElementById('url').value = '';
       document.getElementById('icon').value = '';
     }
-    function showResult(message, isSuccess = true) {
-      const result = document.getElementById('result');
-      result.textContent = message;
-      result.className = `result-message ${isSuccess ? 'success' : 'error'}`;
-      setTimeout(() => { result.style.display = 'none'; }, 5000);
+
+    function showResult(msg, success = true) {
+      const res = document.getElementById('result');
+      res.textContent = msg;
+      res.className = `result-message ${success ? 'success' : 'error'}`;
+      setTimeout(() => { res.style.display = 'none'; }, 5000);
     }
+
     function testBroadcast() {
       const title = document.getElementById('title').value;
       const body = document.getElementById('body').value;
@@ -982,7 +886,6 @@
       showResult('✅ Check console (F12)');
     }
 
-    // ---------- Send broadcast (UPDATED secret) ----------
     async function sendBroadcast() {
       const title = document.getElementById('title').value;
       const body = document.getElementById('body').value;
@@ -992,17 +895,17 @@
         title, body,
         url: document.getElementById('url').value || null,
         icon: document.getElementById('icon').value || null,
-        secret: "gim@admin!"   // <-- UPDATED SECRET
+        secret: BROADCAST_SECRET
       };
 
       try {
-        const response = await fetch('/broadcast', {
+        const res = await fetch('/broadcast', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        const data = await response.json();
-        if (response.ok) {
+        const data = await res.json();
+        if (res.ok) {
           stats.total++;
           stats.last = new Date().toISOString();
           localStorage.setItem('totalBroadcasts', stats.total);
@@ -1023,12 +926,12 @@
     }
 
     function updateHistory() {
-      const historyEl = document.getElementById('history');
+      const el = document.getElementById('history');
       if (broadcastHistory.length === 0) {
-        historyEl.innerHTML = '<div style="text-align:center; color:#9aa4b2; padding:20px;"><i class="fas fa-exchange-alt"></i> Send your first broadcast</div>';
+        el.innerHTML = '<div style="text-align:center; color:#9aa4b2; padding:20px;"><i class="fas fa-exchange-alt"></i> Send your first broadcast</div>';
         return;
       }
-      historyEl.innerHTML = broadcastHistory.map(item => `
+      el.innerHTML = broadcastHistory.map(item => `
         <div class="history-item">
           <span class="history-time">${item.time}</span>
           <span class="history-title">${item.title}</span>
@@ -1037,40 +940,22 @@
       `).join('');
     }
 
-    // ---------- New Modal Functions ----------
+    // ---------- Modal controls ----------
     function showStatsModal() {
       document.getElementById('statsModal').classList.add('show');
-      // Refresh stats when opened
-      fetchStats();
+      fetchDetailedStats(); // refresh when opened
     }
-    function closeStatsModal() {
-      document.getElementById('statsModal').classList.remove('show');
-    }
+    function closeStatsModal() { document.getElementById('statsModal').classList.remove('show'); }
 
-// ---------- Stream Modal Functions ----------
-function showStreamModal() {
-  document.getElementById('streamModal').classList.add('show');
-}
+    function showStreamModal() { document.getElementById('streamModal').classList.add('show'); }
+    function closeStreamModal() { document.getElementById('streamModal').classList.remove('show'); }
 
-function closeStreamModal() {
-  document.getElementById('streamModal').classList.remove('show');
-}
+    // Placeholder actions
+    function startStream() { alert('🎥 Stream feature coming soon!'); closeStreamModal(); }
+    function uploadVideo() { alert('📤 Upload Videos feature coming soon!'); closeStreamModal(); }
+    function startLivePoll() { alert('📊 Live Poll feature coming soon!'); closeStreamModal(); }
 
-function startStream() {
-  alert('🎥 Stream feature coming soon!');
-  closeStreamModal();
-}
-
-function uploadVideo() {
-  alert('📤 Upload Videos feature coming soon!');
-  closeStreamModal();
-}
-
-function startLivePoll() {
-  alert('📊 Live Poll feature coming soon!');
-  closeStreamModal();
-}
-    // Keyboard shortcut Ctrl+Enter
+    // Ctrl+Enter shortcut
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.key === 'Enter') {
         e.preventDefault();
