@@ -25,45 +25,98 @@
       margin: 0 auto;
     }
 
+    /* Header with icons */
     .header {
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 30px;
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .header h1 {
-      font-size: 2.5rem;
+    .header-title h1 {
+      font-size: 2rem;
       background: linear-gradient(135deg, #ff4444, #ffaa00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
     }
 
-    .header p {
+    .header-title p {
       color: #9aa4b2;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
     }
 
-    .stats-card {
+    .header-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .header-icon {
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1.3rem;
+      color: #7dd3fc;
+    }
+
+    .header-icon:hover {
+      background: linear-gradient(135deg, #ff4444, #ffaa00);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
+      color: white;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 15px;
       padding: 20px;
-      margin-bottom: 25px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      justify-content: space-around;
-      text-align: center;
+      transition: transform 0.3s;
     }
 
-    .stat-item {
-      flex: 1;
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: #ffaa00;
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      color: #9aa4b2;
+    }
+
+    .stat-header i {
+      font-size: 1.5rem;
+      color: #ffaa00;
     }
 
     .stat-value {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: bold;
       background: linear-gradient(135deg, #ff4444, #ffaa00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      line-height: 1.2;
     }
 
     .stat-label {
@@ -72,6 +125,13 @@
       margin-top: 5px;
     }
 
+    .stat-footer {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #4a5568;
+    }
+
+    /* Admin Card */
     .admin-card {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 15px;
@@ -86,43 +146,7 @@
       font-size: 1.5rem;
     }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #9aa4b2;
-      font-weight: 500;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 12px 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: #e6eef6;
-      font-size: 1rem;
-      transition: all 0.3s;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #ffaa00;
-      box-shadow: 0 0 0 2px rgba(255, 170, 0, 0.2);
-    }
-
-    .form-group textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
+    /* Quick buttons, form groups, etc. (same as before) */
     .quick-buttons {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -150,8 +174,32 @@
       box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
     }
 
-    .quick-btn i {
-      font-size: 1.1rem;
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #9aa4b2;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e6eef6;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #ffaa00;
     }
 
     .action-buttons {
@@ -190,10 +238,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
+    /* Result message */
     .result-message {
       margin-top: 20px;
       padding: 15px;
@@ -215,6 +260,7 @@
       display: block;
     }
 
+    /* History list */
     .history-list {
       max-height: 200px;
       overflow-y: auto;
@@ -225,10 +271,6 @@
       padding: 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       font-size: 0.9rem;
-    }
-
-    .history-item:last-child {
-      border-bottom: none;
     }
 
     .history-time {
@@ -251,10 +293,112 @@
       margin-left: 8px;
     }
 
+    /* Login Modal (like privacy policy modal) */
+    .login-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-modal.show {
+      display: flex;
+    }
+
+    .login-content {
+      background: var(--gim--card, #091722);
+      color: var(--gim--text, #e6eef6);
+      max-width: 400px;
+      width: 90%;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+
+    .login-content h2 {
+      margin-top: 0;
+      color: #7dd3fc;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .login-form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .login-form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #9aa4b2;
+      font-weight: 500;
+    }
+
+    .login-form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e6eef6;
+      font-size: 1rem;
+    }
+
+    .login-form-group input:focus {
+      outline: none;
+      border-color: #ffaa00;
+    }
+
+    .login-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+
+    .greeting-message {
+      text-align: center;
+      color: #10b981;
+      margin: 1rem 0;
+      font-size: 1.1rem;
+      display: none;
+    }
+
+    .greeting-message.show {
+      display: block;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Main content (hidden until login) */
+    .main-content {
+      display: none;
+    }
+
+    .main-content.visible {
+      display: block;
+    }
+
     @media (max-width: 600px) {
-      .stats-card {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
         flex-direction: column;
         gap: 15px;
+        text-align: center;
       }
       
       .action-buttons {
@@ -269,132 +413,191 @@
   </style>
 </head>
 <body>
-  <script>
-  const password = prompt("Enter admin password:");
-  if (password !== "gim@admin!") {
-    document.body.innerHTML = "<h1>Access Denied</h1>";
-    throw new Error("Unauthorized");
-  }
-</script>
-  <div class="container">
-    <div class="header">
-      <h1><i class="fas fa-bullhorn"></i> Broadcast Admin</h1>
-      <p>Send instant notifications to everyone visiting your site</p>
-    </div>
-
-    <!-- Live Stats -->
-    <div class="stats-card">
-      <div class="stat-item">
-        <div class="stat-value" id="activeVisitors">0</div>
-        <div class="stat-label">Active Visitors</div>
+  <!-- Login Modal (like privacy policy modal) -->
+  <div class="login-modal" id="loginModal">
+    <div class="login-content">
+      <h2><i class="fa-solid fa-lock"></i> Admin Login</h2>
+      <div class="login-form-group">
+        <label><i class="fa-solid fa-key"></i> Password</label>
+        <input type="password" id="adminPassword" placeholder="Enter admin password" onkeypress="handleKeyPress(event)">
       </div>
-      <div class="stat-item">
-        <div class="stat-value" id="totalBroadcasts">0</div>
-        <div class="stat-label">Broadcasts Sent</div>
+      <div class="greeting-message" id="greetingMessage">
+        <i class="fa-solid fa-hand-wave"></i> Welcome, Admin!
       </div>
-      <div class="stat-item">
-        <div class="stat-value" id="lastBroadcast">-</div>
-        <div class="stat-label">Last Broadcast</div>
+      <div class="login-buttons">
+        <button class="btn btn-secondary" onclick="closeLoginModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="verifyPassword()"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</button>
       </div>
     </div>
+  </div>
 
-    <!-- Quick Templates -->
-    <div class="admin-card">
-      <h2><i class="fas fa-bolt"></i> Quick Templates</h2>
-      <div class="quick-buttons">
-        <button class="quick-btn" onclick="setTemplate('welcome')">
-          <i class="fas fa-hand-wave"></i> Welcome
-        </button>
-        <button class="quick-btn" onclick="setTemplate('update')">
-          <i class="fas fa-star"></i> New Update
-        </button>
-        <button class="quick-btn" onclick="setTemplate('blog')">
-          <i class="fas fa-blog"></i> New Blog
-        </button>
-        <button class="quick-btn" onclick="setTemplate('event')">
-          <i class="fas fa-calendar"></i> Event
-        </button>
-        <button class="quick-btn" onclick="setTemplate('maintenance')">
-          <i class="fas fa-tools"></i> Maintenance
-        </button>
-        <button class="quick-btn" onclick="clearForm()">
-          <i class="fas fa-eraser"></i> Clear
-        </button>
-      </div>
-    </div>
-
-    <!-- Broadcast Form -->
-    <div class="admin-card">
-      <h2><i class="fas fa-paper-plane"></i> Compose Broadcast</h2>
-      
-      <div class="form-group">
-        <label><i class="fas fa-heading"></i> Title *</label>
-        <input type="text" id="title" placeholder="e.g., New Blog Post!">
-      </div>
-
-      <div class="form-group">
-        <label><i class="fas fa-align-left"></i> Message *</label>
-        <textarea id="body" placeholder="Enter your message here..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label><i class="fas fa-link"></i> URL (optional)</label>
-        <input type="url" id="url" placeholder="https://your-site.com/page">
-      </div>
-
-      <div class="form-group">
-        <label><i class="fas fa-image"></i> Icon URL (optional)</label>
-        <input type="url" id="icon" placeholder="/images/logo.png">
-        <small style="color: #9aa4b2; display: block; margin-top: 5px;">Leave empty for default icon</small>
-      </div>
-
-      <div class="action-buttons">
-        <button class="btn btn-secondary" onclick="testBroadcast()">
-          <i class="fas fa-vial"></i> Test (Console)
-        </button>
-        <button class="btn btn-primary" onclick="sendBroadcast()">
-          <i class="fas fa-bullhorn"></i> Send Broadcast
-        </button>
-      </div>
-
-      <!-- Result Message -->
-      <div id="result" class="result-message"></div>
-    </div>
-
-    <!-- Broadcast History -->
-    <div class="admin-card">
-      <h2><i class="fas fa-history"></i> Recent Broadcasts</h2>
-      <div id="history" class="history-list">
-        <div class="history-item">
-          <span class="history-time">Just now</span>
-          <span class="history-title">Welcome to my site!</span>
-          <span class="badge">5 delivered</span>
+  <!-- Main Admin Content (hidden until login) -->
+  <div class="main-content" id="mainContent">
+    <div class="container">
+      <!-- Header with Icons -->
+      <div class="header">
+        <div class="header-title">
+          <h1><i class="fas fa-bullhorn"></i> Broadcast Admin</h1>
+          <p>Send instant notifications to everyone visiting your site</p>
         </div>
-        <div style="text-align: center; color: #9aa4b2; padding: 20px;">
-          <i class="fas fa-exchange-alt"></i> Send your first broadcast to see history
+        <div class="header-icons">
+          <div class="header-icon" id="statsIcon" onclick="showStatsDetails()" title="Statistics Details">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="header-icon" id="streamIcon" onclick="showStreamOptions()" title="Live Streaming">
+            <i class="fas fa-video"></i>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Secret Admin Note -->
-    <div style="text-align: center; margin-top: 20px; color: #9aa4b2; font-size: 0.9rem;">
-      <i class="fas fa-lock"></i> Keep this page private - only you should have access!
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <!-- Active Visitors -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <i class="fas fa-users"></i>
+            <span>Real-time</span>
+          </div>
+          <div class="stat-value" id="activeVisitors">0</div>
+          <div class="stat-label">Active Visitors Now</div>
+          <div class="stat-footer">Updated every 5 seconds</div>
+        </div>
+
+        <!-- Total Broadcasts -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <i class="fas fa-bullhorn"></i>
+            <span>Total</span>
+          </div>
+          <div class="stat-value" id="totalBroadcasts">0</div>
+          <div class="stat-label">Broadcasts Sent</div>
+          <div class="stat-footer" id="lastBroadcastTime">Last: -</div>
+        </div>
+
+        <!-- Total Unique Visitors (NEW) -->
+        <div class="stat-card">
+          <div class="stat-header">
+            <i class="fas fa-address-book"></i>
+            <span>All Time</span>
+          </div>
+          <div class="stat-value" id="totalVisitors">0</div>
+          <div class="stat-label">Unique Visitors</div>
+          <div class="stat-footer">Since site launch</div>
+        </div>
+      </div>
+
+      <!-- Quick Templates -->
+      <div class="admin-card">
+        <h2><i class="fas fa-bolt"></i> Quick Templates</h2>
+        <div class="quick-buttons">
+          <button class="quick-btn" onclick="setTemplate('welcome')">
+            <i class="fas fa-hand-wave"></i> Welcome
+          </button>
+          <button class="quick-btn" onclick="setTemplate('update')">
+            <i class="fas fa-star"></i> New Update
+          </button>
+          <button class="quick-btn" onclick="setTemplate('blog')">
+            <i class="fas fa-blog"></i> New Blog
+          </button>
+          <button class="quick-btn" onclick="setTemplate('event')">
+            <i class="fas fa-calendar"></i> Event
+          </button>
+          <button class="quick-btn" onclick="setTemplate('maintenance')">
+            <i class="fas fa-tools"></i> Maintenance
+          </button>
+          <button class="quick-btn" onclick="clearForm()">
+            <i class="fas fa-eraser"></i> Clear
+          </button>
+        </div>
+      </div>
+
+      <!-- Broadcast Form -->
+      <div class="admin-card">
+        <h2><i class="fas fa-paper-plane"></i> Compose Broadcast</h2>
+        
+        <div class="form-group">
+          <label><i class="fas fa-heading"></i> Title *</label>
+          <input type="text" id="title" placeholder="e.g., New Blog Post!">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-align-left"></i> Message *</label>
+          <textarea id="body" placeholder="Enter your message here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-link"></i> URL (optional)</label>
+          <input type="url" id="url" placeholder="https://your-site.com/page">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-image"></i> Icon URL (optional)</label>
+          <input type="url" id="icon" placeholder="/images/logo.png">
+          <small style="color: #9aa4b2; display: block; margin-top: 5px;">Leave empty for default icon</small>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-secondary" onclick="testBroadcast()">
+            <i class="fas fa-vial"></i> Test (Console)
+          </button>
+          <button class="btn btn-primary" onclick="sendBroadcast()">
+            <i class="fas fa-bullhorn"></i> Send Broadcast
+          </button>
+        </div>
+
+        <div id="result" class="result-message"></div>
+      </div>
+
+      <!-- Broadcast History -->
+      <div class="admin-card">
+        <h2><i class="fas fa-history"></i> Recent Broadcasts</h2>
+        <div id="history" class="history-list">
+          <!-- History will be populated here -->
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px; color: #9aa4b2; font-size: 0.9rem;">
+        <i class="fas fa-lock"></i> Secure Admin Area
+      </div>
     </div>
   </div>
 
   <script>
-    // Store broadcast history
+    // Admin password (in production, this should match server secret)
+    const ADMIN_PASSWORD = "Godbuild2026Secure!"; // Change this to your password
+
+    // Store broadcast history and stats
     let broadcastHistory = JSON.parse(localStorage.getItem('broadcastHistory') || '[]');
     let stats = {
       total: parseInt(localStorage.getItem('totalBroadcasts') || '0'),
       last: localStorage.getItem('lastBroadcast') || null
     };
 
-    // Update stats display
+    // Total unique visitors (stored in localStorage for demo - in production, this comes from server)
+    let totalVisitors = parseInt(localStorage.getItem('totalUniqueVisitors') || '1247'); // Example starting value
+
+    // Format numbers with K, M, B
+    function formatNumber(num) {
+      if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1) + 'B';
+      }
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+      }
+      if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+      }
+      return num.toString();
+    }
+
+    // Update stats display with formatting
     function updateStats() {
-      document.getElementById('activeVisitors').textContent = '0'; // Will be updated when connected
-      document.getElementById('totalBroadcasts').textContent = stats.total;
-      document.getElementById('lastBroadcast').textContent = stats.last ? new Date(stats.last).toLocaleTimeString() : '-';
+      document.getElementById('activeVisitors').textContent = '0'; // Will be updated from server
+      document.getElementById('totalBroadcasts').textContent = formatNumber(stats.total);
+      document.getElementById('totalVisitors').textContent = formatNumber(totalVisitors);
+      
+      const lastTime = stats.last ? new Date(stats.last).toLocaleTimeString() : '-';
+      document.getElementById('lastBroadcastTime').textContent = `Last: ${lastTime}`;
     }
 
     // Check server health and get active clients
@@ -411,6 +614,48 @@
     // Update health every 5 seconds
     setInterval(checkServerHealth, 5000);
     checkServerHealth();
+
+    // Login functions
+    function showLoginModal() {
+      document.getElementById('loginModal').classList.add('show');
+      document.getElementById('adminPassword').value = '';
+      document.getElementById('greetingMessage').classList.remove('show');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('show');
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        verifyPassword();
+      }
+    }
+
+    function verifyPassword() {
+      const password = document.getElementById('adminPassword').value;
+      
+      if (password === ADMIN_PASSWORD) {
+        // Show greeting
+        const greeting = document.getElementById('greetingMessage');
+        greeting.classList.add('show');
+        
+        // After 1.5 seconds, close modal and show main content
+        setTimeout(() => {
+          closeLoginModal();
+          document.getElementById('mainContent').classList.add('visible');
+        }, 1500);
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    // Check if already logged in? For demo, always show login
+    window.onload = function() {
+      showLoginModal();
+      updateStats();
+      updateHistory();
+    };
 
     // Template presets
     const templates = {
@@ -461,18 +706,17 @@
       document.getElementById('icon').value = '';
     }
 
-    // Show result message
+    // Show result
     function showResult(message, isSuccess = true) {
       const result = document.getElementById('result');
       result.textContent = message;
       result.className = `result-message ${isSuccess ? 'success' : 'error'}`;
-      
       setTimeout(() => {
         result.style.display = 'none';
       }, 5000);
     }
 
-    // Test broadcast (console only)
+    // Test broadcast
     function testBroadcast() {
       const title = document.getElementById('title').value;
       const body = document.getElementById('body').value;
@@ -482,16 +726,11 @@
         return;
       }
 
-      console.log('📢 TEST BROADCAST:');
-      console.log('Title:', title);
-      console.log('Message:', body);
-      console.log('URL:', document.getElementById('url').value || '(none)');
-      console.log('Icon:', document.getElementById('icon').value || '(default)');
-      
-      showResult('✅ Check the console (F12) to see your test message!');
+      console.log('📢 TEST BROADCAST:', { title, body });
+      showResult('✅ Check console (F12)');
     }
 
-    // Send actual broadcast
+    // Send broadcast (include secret)
     async function sendBroadcast() {
       const title = document.getElementById('title').value;
       const body = document.getElementById('body').value;
@@ -506,51 +745,45 @@
         body: body,
         url: document.getElementById('url').value || null,
         icon: document.getElementById('icon').value || null,
-        secret: "gim032011"  // Add this line
+        secret: "Godbuild2026Secure!" // Must match server.js
       };
 
       try {
         const response = await fetch('/broadcast', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
         const data = await response.json();
 
         if (response.ok) {
-          // Update stats
           stats.total++;
           stats.last = new Date().toISOString();
           localStorage.setItem('totalBroadcasts', stats.total);
           localStorage.setItem('lastBroadcast', stats.last);
           
-          // Add to history
           broadcastHistory.unshift({
             title: title,
             time: new Date().toLocaleTimeString(),
             recipients: data.sentTo
           });
-          broadcastHistory = broadcastHistory.slice(0, 10); // Keep last 10
+          broadcastHistory = broadcastHistory.slice(0, 10);
           localStorage.setItem('broadcastHistory', JSON.stringify(broadcastHistory));
           
           updateStats();
           updateHistory();
-          
-          showResult(`✅ Broadcast sent to ${data.sentTo} active visitor(s)!`);
+          showResult(`✅ Sent to ${data.sentTo} active visitor(s)!`);
           clearForm();
         } else {
-          showResult(`❌ Error: ${data.error || 'Unknown error'}`, false);
+          showResult(`❌ Error: ${data.error}`, false);
         }
       } catch (err) {
-        showResult('❌ Failed to connect to server', false);
-        console.error(err);
+        showResult('❌ Failed to connect', false);
       }
     }
 
-    // Update history display
+    // Update history
     function updateHistory() {
       const historyEl = document.getElementById('history');
       
@@ -568,9 +801,14 @@
       `).join('');
     }
 
-    // Load history on page load
-    updateHistory();
-    updateStats();
+    // Icon functions (placeholders for now)
+    function showStatsDetails() {
+      alert(`📊 Statistics Details:\n\nActive Visitors: ${document.getElementById('activeVisitors').textContent}\nTotal Broadcasts: ${document.getElementById('totalBroadcasts').textContent}\nUnique Visitors: ${document.getElementById('totalVisitors').textContent}`);
+    }
+
+    function showStreamOptions() {
+      alert('🎥 Live Streaming features coming soon!\n\nYou will be able to:\n• Start live video broadcasts\n• Stream to visitors\n• Interactive Q&A sessions');
+    }
 
     // Keyboard shortcut: Ctrl+Enter to send
     document.addEventListener('keydown', (e) => {
