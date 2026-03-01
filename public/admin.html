@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Broadcast Admin - Godbuild Site</title>
+	<link rel="icon" type="image/ico" href="favicon.ico">
+  <title>Admin Office - Godbuild Site</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
@@ -558,6 +559,66 @@
         grid-template-columns: 1fr;
       }
     }
+
+/* Upload & Poll Modals (similar to stats modal) */
+.upload-modal, .poll-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 20000;
+  justify-content: center;
+  align-items: center;
+}
+.upload-modal.show, .poll-modal.show {
+  display: flex;
+}
+.upload-modal-content, .poll-modal-content {
+  background: #0f1a2a;
+  color: #e6eef6;
+  max-width: 500px;
+  width: 90%;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.upload-modal-header, .poll-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.upload-modal-header h2, .poll-modal-header h2 {
+  color: #ffaa00;
+}
+.close-upload-btn, .close-poll-btn {
+  background: none;
+  border: none;
+  color: #9aa4b2;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.close-upload-btn:hover, .close-poll-btn:hover {
+  color: #ff4444;
+}
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: #333;
+  border-radius: 10px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #ff4444, #ffaa00);
+  width: 0%;
+  transition: width 0.3s;
+}
   </style>
 </head>
 <body>
@@ -585,15 +646,15 @@
       <!-- Header -->
       <div class="header">
         <div class="header-title">
-          <h1><i class="fas fa-bullhorn"></i> Broadcast Admin</h1>
-          <p>Send instant notifications to everyone visiting your site</p>
+          <h1><i class="fas fa-user"></i> Admin Office</h1>
+          <p>Send instant notifications/updates to everyone visiting your site</p>
         </div>
         <div class="header-icons">
           <div class="header-icon" onclick="showStatsModal()" title="Statistics Dashboard">
             <i class="fas fa-chart-pie"></i>
           </div>
-          <div class="header-icon" onclick="showStreamModal()" title="Stream & Media">
-            <i class="fas fa-video"></i>
+          <div class="header-icon" onclick="showStreamModal()" title="Stream And Media">
+            <i class="fas fa-stream"></i>
           </div>
         </div>
       </div>
@@ -601,22 +662,20 @@
       <!-- Stats Cards -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-header"><i class="fas fa-users"></i><span>Real-time</span></div>
+          <div class="stat-header"><i class="fas fa-users"></i><span>Active Visitors</span></div>
           <div class="stat-value" id="activeVisitors">0</div>
-          <div class="stat-label">Active Visitors Now</div>
-          <div class="stat-footer">Updated every 5 seconds</div>
+          <div class="stat-label">Online</div>
         </div>
         <div class="stat-card">
-          <div class="stat-header"><i class="fas fa-bullhorn"></i><span>Total</span></div>
+          <div class="stat-header"><i class="fas fa-bullhorn"></i><span>Total Broadcasts</span></div>
           <div class="stat-value" id="totalBroadcasts">0</div>
-          <div class="stat-label">Broadcasts Sent</div>
+          <div class="stat-label">Broadcasted</div>
           <div class="stat-footer" id="lastBroadcastTime">Last: -</div>
         </div>
         <div class="stat-card">
-          <div class="stat-header"><i class="fas fa-address-book"></i><span>All Time</span></div>
+          <div class="stat-header"><i class="fas fa-address-book"></i><span>Total Visitors</span></div>
           <div class="stat-value" id="totalVisitors">0</div>
-          <div class="stat-label">Unique Visitors</div>
-          <div class="stat-footer">Since site launch</div>
+          <div class="stat-label">Visitors</div>
         </div>
       </div>
 
@@ -624,11 +683,13 @@
       <div class="admin-card">
         <h2><i class="fas fa-bolt"></i> Quick Templates</h2>
         <div class="quick-buttons">
-          <button class="quick-btn" onclick="setTemplate('welcome')"><i class="fas fa-hand-wave"></i> Welcome</button>
+          <button class="quick-btn" onclick="setTemplate('welcome')"><i class="fas fa-hand"></i> Welcome</button>
           <button class="quick-btn" onclick="setTemplate('update')"><i class="fas fa-star"></i> New Update</button>
+          <button class="quick-btn" onclick="setTemplate('post')"><i class="fas fa-arrow-up"></i> New Post</button>
           <button class="quick-btn" onclick="setTemplate('blog')"><i class="fas fa-blog"></i> New Blog</button>
           <button class="quick-btn" onclick="setTemplate('event')"><i class="fas fa-calendar"></i> Event</button>
           <button class="quick-btn" onclick="setTemplate('maintenance')"><i class="fas fa-tools"></i> Maintenance</button>
+          <button class="quick-btn" onclick="setTemplate('support')"><i class="fas fa-handshake"></i> Support</button>
           <button class="quick-btn" onclick="clearForm()"><i class="fas fa-eraser"></i> Clear</button>
         </div>
       </div>
@@ -724,17 +785,72 @@
           <i class="fas fa-circle"></i>
           <span>Stream</span>
         </div>
-        <div class="stream-option" onclick="uploadVideo()">
-          <i class="fas fa-upload"></i>
-          <span>Upload Videos</span>
-        </div>
-        <div class="stream-option" onclick="startLivePoll()">
-          <i class="fa-solid fa-square-poll-vertical"></i>
-          <span>Live Poll</span>
-        </div>
+<div class="stream-option" onclick="showUploadModal()">
+  <i class="fas fa-upload"></i>
+  <span>Upload Videos</span>
+</div>
+<div class="stream-option" onclick="showPollModal()">
+  <i class="fa-solid fa-square-poll-vertical"></i>
+  <span>Live Poll</span>
+</div>
       </div>
     </div>
   </div>
+
+	<!-- Upload Videos Modal -->
+<div class="upload-modal" id="uploadModal">
+  <div class="upload-modal-content">
+    <div class="upload-modal-header">
+      <h2><i class="fas fa-upload"></i> Upload Video</h2>
+      <button class="close-upload-btn" onclick="closeUploadModal()">&times;</button>
+    </div>
+    <div class="upload-body">
+      <div class="form-group">
+        <label>Select video file (MP4, WebM, etc.)</label>
+        <input type="file" id="videoFile" accept="video/*">
+      </div>
+      <div class="progress-bar" id="uploadProgress" style="display:none;">
+        <div class="progress-fill"></div>
+      </div>
+      <div id="uploadResult"></div>
+    </div>
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="uploadVideo()">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- Create Poll Modal -->
+<div class="poll-modal" id="pollModal">
+  <div class="poll-modal-content">
+    <div class="poll-modal-header">
+      <h2><i class="fa-solid fa-square-poll-vertical"></i> Create Live Poll</h2>
+      <button class="close-poll-btn" onclick="closePollModal()">&times;</button>
+    </div>
+    <div class="poll-body">
+      <div class="form-group">
+        <label>Question</label>
+        <input type="text" id="pollQuestion" placeholder="Enter your question">
+      </div>
+      <div class="form-group">
+        <label>Options (one per line)</label>
+        <textarea id="pollOptions" placeholder="Option 1&#10;Option 2&#10;Option 3&#10;Option 4&#10;Option 5&#10;Option 6&#10;" rows="6"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Choice Type</label>
+        <select id="pollType">
+          <option value="single">Single choice</option>
+          <option value="multiple">Multiple choice</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="closePollModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="createPoll()">Post Poll</button>
+    </div>
+  </div>
+</div>
 
   <script>
     // ---------- Admin credentials ----------
@@ -849,9 +965,11 @@
     const templates = {
       welcome: { title: '👋 Welcome!', body: 'Thanks for visiting my site!', icon: '/images/logo.png' },
       update: { title: '✨ New Update', body: 'I\'ve added new content.', icon: '/images/logo.png' },
+			post: { title: '📯 New Post', body: 'I\'ve added a new post on my socials. Check it out now!', icon: '/images/logo.png' },
       blog: { title: '📝 New Blog Post', body: 'Just published a new article.', url: '#about', icon: '/images/logo.png' },
       event: { title: '🎉 Special Event', body: 'Something exciting is happening!', icon: '/images/logo.png' },
-      maintenance: { title: '🔧 Quick Maintenance', body: 'Site might be briefly unavailable.', icon: '/images/logo.png' }
+      maintenance: { title: '🔧 Quick Maintenance', body: 'Site might be briefly unavailable.', icon: '/images/logo.png' },
+      support: { title: '🤝 Support Notice', body: 'Your support is highly needed for the site to become better. Please, as you are led, kindly support the site, contact: michaelgodbuild@yahoo.com to send account details.', icon: '/images/logo.png' },
     };
 
     function setTemplate(type) {
@@ -952,8 +1070,116 @@
 
     // Placeholder actions
     function startStream() { alert('🎥 Stream feature coming soon!'); closeStreamModal(); }
-    function uploadVideo() { alert('📤 Upload Videos feature coming soon!'); closeStreamModal(); }
-    function startLivePoll() { alert('📊 Live Poll feature coming soon!'); closeStreamModal(); }
+// ---------- Video Upload ----------
+function showUploadModal() {
+  document.getElementById('uploadModal').classList.add('show');
+  document.getElementById('videoFile').value = '';
+  document.getElementById('uploadResult').innerHTML = '';
+  document.getElementById('uploadProgress').style.display = 'none';
+}
+
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('show');
+}
+
+async function uploadVideo() {
+  const fileInput = document.getElementById('videoFile');
+  const file = fileInput.files[0];
+  if (!file) {
+    alert('Please select a video file.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('video', file);
+
+  const progressBar = document.getElementById('uploadProgress');
+  const progressFill = document.querySelector('.progress-fill');
+  progressBar.style.display = 'block';
+  progressFill.style.width = '0%';
+
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/upload/video', true);
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const percent = (e.loaded / e.total) * 100;
+        progressFill.style.width = percent + '%';
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        document.getElementById('uploadResult').innerHTML = `<p style="color:#10b981;">✅ Upload successful! <a href="${data.url}" target="_blank">View video</a></p>`;
+        progressFill.style.width = '100%';
+        setTimeout(() => progressBar.style.display = 'none', 1000);
+      } else {
+        const err = JSON.parse(xhr.responseText);
+        document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ Error: ${err.error}</p>`;
+      }
+    };
+
+    xhr.onerror = () => {
+      document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ Upload failed.</p>`;
+    };
+
+    xhr.send(formData);
+  } catch (err) {
+    document.getElementById('uploadResult').innerHTML = `<p style="color:#ff4444;">❌ Error: ${err.message}</p>`;
+  }
+}
+
+// ---------- Live Poll ----------
+function showPollModal() {
+  document.getElementById('pollModal').classList.add('show');
+  document.getElementById('pollQuestion').value = '';
+  document.getElementById('pollOptions').value = '';
+  document.getElementById('pollType').value = 'single';
+}
+
+function closePollModal() {
+  document.getElementById('pollModal').classList.remove('show');
+}
+
+async function createPoll() {
+  const question = document.getElementById('pollQuestion').value.trim();
+  const optionsText = document.getElementById('pollOptions').value.trim();
+  const type = document.getElementById('pollType').value;
+
+  if (!question) {
+    alert('Please enter a question.');
+    return;
+  }
+  const options = optionsText.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+  if (options.length < 2) {
+    alert('Please enter at least two options (one per line).');
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/poll/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: "gim@admin!",
+        question,
+        options,
+        type
+      })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      alert(`Poll created successfully! ID: ${data.pollId}`);
+      closePollModal();
+    } else {
+      alert(`Error: ${data.error}`);
+    }
+  } catch (err) {
+    alert('Failed to create poll.');
+  }
+}
 
     // Ctrl+Enter shortcut
     document.addEventListener('keydown', (e) => {
