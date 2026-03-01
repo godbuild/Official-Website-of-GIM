@@ -30,7 +30,7 @@
   --gim--card: #ffffff;
   --gim--muted: #4a5568;
   --gim--accent: #2563eb;
-  --gim--text: #1e293b;
+  --gim--text: rgb(204, 209, 218);
   --gim--glass: rgba(0, 0, 0, 0.02);
   --gim--glass-strong: rgba(0, 0, 0, 0.05);
   --gim--shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -224,13 +224,22 @@ button {
   width: 100%;
 }
 
+.header-logo {
+  width: 110px;
+  height: 110px;
+	margin-top: 5px;
+  margin-right: 5px;
+  object-fit: contain;
+}
+
 .header-buttons {
   display: flex;
   gap: 0.5rem;
 }
 
 .privacy-btn,
-.theme-toggle {
+.theme-toggle,
+.alert-btn {
   background: var(--gim--glass-strong);
   border: none;
   color: var(--gim--text);
@@ -246,7 +255,8 @@ button {
 }
 
 .privacy-btn:hover,
-.theme-toggle:hover {
+.theme-toggle:hover,
+.alert-btn:hover {
   background: var(--gim--glass);
 }
 
@@ -450,7 +460,7 @@ main {
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(5px);
-  z-index: 10000;
+  z-index: 20000; /* higher than poll banner */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,6 +480,8 @@ main {
   border-radius: 16px;
   box-shadow: var(--gim--shadow);
   position: relative;
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
 .modal-content h2 {
@@ -556,7 +568,8 @@ body.modal-open .modal-overlay * {
     padding: 0 1rem;
   }
   .privacy-btn,
-  .theme-toggle {
+  .theme-toggle,
+  .alert-btn {
     width: 36px;
     height: 36px;
     font-size: 1rem;
